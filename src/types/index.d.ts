@@ -101,6 +101,8 @@ interface Window {
         ws: any;
         languages: any;
         emojis: any;
+        layout: any;
+        mobile:any;
     };
     Lute: any;
 }

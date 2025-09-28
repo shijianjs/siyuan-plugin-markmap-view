@@ -1,0 +1,27 @@
+.markmap-view-container{
+  height: calc(100% - 4px);
+  .mm-toolbar{
+  //                  el.style.position = 'absolute';
+    position: absolute;
+    //                el.style.bottom = '0.5rem';
+    bottom: 0.5rem;
+    //                el.style.right = '0.5rem';
+    right: 0.5rem;
+    //                // el.style.width = '50px'
+    //width: 50px;
+    //                el.style.display = 'flex'
+    //                el.style.alignItems = 'center'
+    display: flex;
+    //align-items: center;
+
+    .mm-toolbar-brand img{
+      height: 20px;
+      margin-right: 4px;
+    }
+  }
+
+}
+.markmap-view-svg{
+  height: 100%;
+  width: 100%;
+}

@@ -1,36 +1,29 @@
 {
-  "name": "plugin-sample-vite-svelte",
-  "author": "frostime",
-  "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.4.1",
+  "name": "siyuan-plugin-markmap-view",
+  "author": "shijianjs",
+  "url": "https://github.com/shijianjs/siyuan-plugin-markmap-view",
+  "version": "1.0.0",
   "minAppVersion": "3.2.1",
   "disabledInPublish": true,
   "backends": [
-    "windows",
-    "linux",
-    "darwin",
-    "ios",
-    "android",
-    "harmony",
-    "docker"
+    "all"
   ],
   "frontends": [
-    "desktop",
-    "mobile",
-    "browser-desktop",
-    "browser-mobile",
-    "desktop-window"
+    "all"
   ],
   "displayName": {
-    "en_US": "Plugin sample with vite and svelte",
-    "zh_CN": "插件样例 vite + svelte 版"
+    "en_US": "Siyuan markmap view plugin",
+    "default": "思源 markmap 视图插件",
+    "zh_CN": "思源 markmap 视图插件"
   },
   "description": {
-    "en_US": "SiYuan plugin sample with vite and svelte",
-    "zh_CN": "使用 vite 和 svelte 开发的思源插件样例"
+    "en_US": "The Siyuan markmap view plugin presents the current notes in the form of a mind map.",
+    "default": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。",
+    "zh_CN": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。"
   },
   "readme": {
     "en_US": "README.md",
+    "default": "README_zh_CN.md",
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
@@ -39,8 +32,9 @@
     ]
   },
   "keywords": [
-    "plugin",
-    "sample",
-    "插件样例"
+    "思维导图",
+    "脑图",
+    "mindmap",
+    "markmap"
   ]
 }
