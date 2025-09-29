@@ -6,12 +6,14 @@ import {
 } from "siyuan";
 import {Markmap} from 'markmap-view';
 import {Toolbar} from 'markmap-toolbar';
+import {Transformer} from 'markmap-lib';
 
 import "./index.scss";
 
 import {client} from "@/client";
-import {transformer} from './MarkmapInit';
 import {getProtyle} from "@/SiyuanUtils";
+
+const transformer = new Transformer();
 
 const ICON_NAME = "icon-park-outline--mindmap-map";
 
@@ -28,18 +30,30 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         console.log("Markmap 插件已加载");
         this.addTopBar({
             icon: ICON_NAME,                    // 按钮图标
-            title: "点击展示当前文档的Markmap思维导图",         // 提示文字
+            title: "Markmap思维导图",         // 提示文字
             position: "right",             // 可选：left / right
             callback: async () => {
 
                 let protyle = this.getEditor().protyle;
                 const docId = protyle.block.rootID;
-                const mdResp = await client.exportMdContent({id: docId})
+                const docInfoResp = await client.getDocInfo({id: docId})
+                const docResp = await client.getDoc({id: docId})
+                let title: string = docInfoResp.data.name;
+                // console.log(protyle)
+                // const mdResp = await client.exportMdContent({id: docId})
+                // let markdown = mdResp.data.content;
+                let docHtmlContent = docResp.data.content;
+                let lute = window.Lute.New();
+                let mdContent = lute.BlockDOM2StdMd(docHtmlContent);
+                let markdown = `
+# ${title?.trim() ?? ''}
 
-                let markdown = mdResp.data.content;
+${mdContent}
+`;
+                // console.log("markdown", markdown)
                 // console.log("点击了生成思维导图", this.name, docId, this.getEditor().protyle, doc, markdown);
                 const dialog = new Dialog({
-                    title: `Markmap - ${protyle.title.element.textContent}`,
+                    title: `Markmap - ${title}`,
                     content: `
                         <div class="markmap-view-container">
                             <svg class="markmap-view-svg" />
@@ -76,7 +90,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
     private getEditor() {
         const editors = getAllEditor();
         if (editors.length === 0) {
-            showMessage(`请先打开文档`,6000,"error");
+            showMessage(`请先打开文档`, 6000, "error");
             return;
         }
         let protyle = getProtyle();

@@ -2,7 +2,7 @@
   "name": "siyuan-plugin-markmap-view",
   "author": "shijianjs",
   "url": "https://github.com/shijianjs/siyuan-plugin-markmap-view",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "3.2.1",
   "disabledInPublish": true,
   "backends": [
@@ -12,18 +12,15 @@
     "all"
   ],
   "displayName": {
-    "en_US": "Siyuan markmap view plugin",
-    "default": "思源 markmap 视图插件",
+    "default": "Siyuan markmap view plugin",
     "zh_CN": "思源 markmap 视图插件"
   },
   "description": {
-    "en_US": "The Siyuan markmap view plugin presents the current notes in the form of a mind map.",
-    "default": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。",
+    "default": "The Siyuan markmap view plugin presents the current notes in the form of a mind map.",
     "zh_CN": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。"
   },
   "readme": {
-    "en_US": "README.md",
-    "default": "README_zh_CN.md",
+    "default": "README.md",
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
@@ -32,9 +29,7 @@
     ]
   },
   "keywords": [
-    "思维导图",
     "脑图",
-    "mindmap",
-    "markmap"
+    "mindmap"
   ]
 }
