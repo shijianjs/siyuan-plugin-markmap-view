@@ -4,22 +4,34 @@ import {
     Dialog,
     getAllEditor
 } from "siyuan";
-import {Markmap} from 'markmap-view';
+import {Markmap, deriveOptions} from 'markmap-view';
 import {Toolbar} from 'markmap-toolbar';
 import {Transformer} from 'markmap-lib';
+
+import type zh_CN from '../public/i18n/zh_CN.json'
 
 import "./index.scss";
 
 import {client} from "@/client";
 import {getProtyle} from "@/SiyuanUtils";
+import {SettingUtils} from "@/libs/setting-utils";
+
 
 const transformer = new Transformer();
 
 const ICON_NAME = "icon-park-outline--mindmap-map";
 
+const initialExpandLevelName = "initialExpandLevel";
+
 export default class SiYuanMarkmapViewPlugin extends Plugin {
 
+    private settingUtils: SettingUtils;
+    typedI18n: typeof zh_CN
+
     async onload() {
+        this.typedI18n = this.i18n as any
+        await this.initSettings();
+
         // 图标的制作参见帮助文档
         this.addIcons(`
             <symbol id="icon-park-outline--mindmap-map" viewBox="0 0 48 48"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M26 24h16M26 38h16M26 10h16M18 24H6h4m8 14c-6-2-2-14-8-14m8-14c-6 2-2 14-8 14"/></symbol>
@@ -27,7 +39,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         // 添加快捷键
         this.addCommand({
             langKey: "openMarkmapDialog",
-            langText: this.i18n.actionName,
+            langText: this.typedI18n.actionName,
             hotkey: "⌥⌘M", // Ctrl+Alt+M
             callback: () => this.openMarkmapDialog(),
             fileTreeCallback: () => this.openMarkmapDialog(),
@@ -35,7 +47,20 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             dockCallback: () => this.openMarkmapDialog(),
         });
 
+    }
 
+    private async initSettings() {
+        this.settingUtils = new SettingUtils({
+            plugin: this
+        });
+        this.settingUtils.addItem({
+            key: initialExpandLevelName,
+            value: 4,
+            type: "number",
+            title: this.typedI18n.initialExpandLevel.title,
+            description: this.typedI18n.initialExpandLevel.description,
+        });
+        await this.settingUtils.load(); //导入配置并合并
     }
 
     onLayoutReady() {
@@ -61,11 +86,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         let docHtmlContent = docResp.data.content;
         let lute = window.Lute.New();
         let mdContent = lute.BlockDOM2StdMd(docHtmlContent);
-        let markdown = `
-# ${title?.trim() ?? ''}
-
-${mdContent}
-`;
+        let markdown = mdContent
         // console.log("markdown", markdown)
         // console.log("点击了生成思维导图", this.name, docId, this.getEditor().protyle, doc, markdown);
         const dialog = new Dialog({
@@ -82,11 +103,15 @@ ${mdContent}
                 mm?.destroy()
             }
         });
-        const containerDiv:HTMLElement = dialog.element.querySelector(".markmap-view-container");
+        const containerDiv: HTMLElement = dialog.element.querySelector(".markmap-view-container");
         const markmapSvg = dialog.element.querySelector(".markmap-view-svg");
-        const {root} = transformer.transform(markdown);
-        const mm = Markmap.create(markmapSvg);
-        await mm.setData(root);
+        let transformResult = transformer.transform(markdown);
+        // console.log("transformResult", transformResult)
+        const mm = Markmap.create(markmapSvg, {
+            initialExpandLevel: this.settingUtils.get(initialExpandLevelName),
+        });
+        transformResult.root.content = title
+        await mm.setData(transformResult.root, deriveOptions(transformResult.frontmatter?.markmap ?? {}));
         await mm.fit();
         let toolbar = Toolbar.create(mm);
         containerDiv.append(toolbar.el);

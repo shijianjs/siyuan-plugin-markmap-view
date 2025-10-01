@@ -1,3 +1,7 @@
 {
-  "actionName": "Markmap mind map"
+  "actionName": "Markmap Mind Map",
+  "initialExpandLevel": {
+    "title": "Initial Expand Level",
+    "description": "How many levels to expand by default when markmap initializes, levels after this will be collapsed, -1 means no collapse;\nConfiguration item for individual documents is initialExpandLevel, refer to: https://markmap.js.org/docs/json-options"
+  }
 }

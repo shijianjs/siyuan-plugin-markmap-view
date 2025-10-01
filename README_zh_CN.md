@@ -9,6 +9,32 @@
 - 点击图标，弹出markmap视图
   - 或使用快捷键 `Ctrl + Alt + M`
 
+## 配置
+
+### 全局配置
+- 操作
+  - 点击插件的配置按钮
+- 目前支持的配置项：
+  - 默认展开层级
+    - markmap默认展开多少层，这个层级后面折叠，-1表示不折叠；
+    - 针对单个文档的配置项是initialExpandLevel
+
+### 文档级配置
+参考：https://markmap.js.org/docs/json-options
+- 也就是在文档的开头添加两个 `---`，中间的内容填配置项，语法是`yaml`；
+- 文档的`Option List`是支持的配置项列表；
+
+示例：
+```markdown
+---
+markmap:
+  initialExpandLevel: 4
+---
+
+思源笔记markdown正文内容
+
+```
+
 
 ## 感谢
 
