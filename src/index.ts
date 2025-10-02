@@ -22,6 +22,8 @@ const transformer = new Transformer();
 const ICON_NAME = "icon-park-outline--mindmap-map";
 
 const initialExpandLevelName = "initialExpandLevel";
+const lineWidthName = "lineWidth";
+const darkModeClassName = "markmap-dark";
 
 export default class SiYuanMarkmapViewPlugin extends Plugin {
 
@@ -60,6 +62,14 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             title: this.typedI18n.initialExpandLevel.title,
             description: this.typedI18n.initialExpandLevel.description,
         });
+        // 线宽不太好设置，就用默认的了，默认也是递减的
+        // this.settingUtils.addItem({
+        //     key: lineWidthName,
+        //     value: 1,
+        //     type: "number",
+        //     title: this.typedI18n.lineWidth.title,
+        //     description: this.typedI18n.lineWidth.description,
+        // });
         await this.settingUtils.load(); //导入配置并合并
     }
 
@@ -75,6 +85,8 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
     }
 
     async openMarkmapDialog() {
+        this.initDarkTheme();
+
         let protyle = this.getEditor().protyle;
         const docId = protyle.block.rootID;
         const docInfoResp = await client.getDocInfo({id: docId})
@@ -109,6 +121,13 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         // console.log("transformResult", transformResult)
         const mm = Markmap.create(markmapSvg, {
             initialExpandLevel: this.settingUtils.get(initialExpandLevelName),
+            // 不太好设置，就用默认的了，默认也是递减的
+            // lineWidth: (node)=>{
+            //     let depth = node.state.depth;
+            //     let w = 4- depth;
+            //     w = Math.max(w, 1);
+            //     return w;
+            // },
         });
         transformResult.root.content = title
         await mm.setData(transformResult.root, deriveOptions(transformResult.frontmatter?.markmap ?? {}));
@@ -125,6 +144,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
 
     async onunload() {
         console.log("onunload");
+        this.cleanDarkModeClass();
     }
 
     uninstall() {
@@ -140,5 +160,18 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         }
         let protyle = getProtyle();
         return {protyle};
+    }
+
+    private initDarkTheme() {
+        let html = document.documentElement;
+        if (html.getAttribute('data-theme-mode')==="dark"){
+            html.classList.add(darkModeClassName);
+        }else {
+            this.cleanDarkModeClass();
+        }
+    }
+
+    private cleanDarkModeClass() {
+        document.documentElement.classList.remove(darkModeClassName);
     }
 }
