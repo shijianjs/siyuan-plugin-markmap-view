@@ -7,5 +7,12 @@
   "lineWidth": {
     "title": "线条宽度",
     "description": "配置markmap的线条宽度"
+  },
+  "exportSvgImage": "导出SVG图片",
+  "markdownSourceMode": {
+    "title": "Markdown来源模式",
+    "description": "两种Markdown文档来源方式，一种有问题的话可以试试另一种",
+    "getDoc": "页面展示的内容，getDoc API，获取不到折叠的块",
+    "exportMdContent": "导出Markdown内容，exportMdContent API，内容比较完整，会通过正则删掉一些脚注、可能（极小概率）会产生影响"
   }
 }

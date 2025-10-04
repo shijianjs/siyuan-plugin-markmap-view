@@ -16,3 +16,11 @@ export function getProtyle() {
         return null;
     }
 }
+
+/**
+ * 截取脚注
+ */
+export function truncateAtFootnote1(content: string): string {
+    const regex = /^[ \t]*\[\^1\]:[\s\S]*$/m;
+    return content.replace(regex, '');
+}

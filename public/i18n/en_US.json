@@ -7,5 +7,12 @@
   "lineWidth": {
     "title": "Line Width",
     "description": "Configure the line width of markmap"
+  },
+  "exportSvgImage": "Export SVG Image",
+  "markdownSourceMode": {
+    "title": "Markdown Source Mode",
+    "description": "Two ways to get Markdown document source, try the other one if one has issues",
+    "getDoc": "Page displayed content, getDoc API, cannot get collapsed blocks",
+    "exportMdContent": "Export Markdown content, exportMdContent API, content is more complete, will remove some footnotes via regex, may (very small probability) cause impact"
   }
 }

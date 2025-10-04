@@ -1,19 +1,15 @@
-import {
-    Plugin,
-    showMessage,
-    Dialog,
-    getAllEditor
-} from "siyuan";
-import {Markmap, deriveOptions} from 'markmap-view';
+import {Dialog, getAllEditor, IProtyle, Plugin, showMessage} from "siyuan";
+import {deriveOptions, Markmap} from 'markmap-view';
 import {Toolbar} from 'markmap-toolbar';
 import {Transformer} from 'markmap-lib';
 
 import type zh_CN from '../public/i18n/zh_CN.json'
 
 import "./index.scss";
+import "markmap-toolbar/dist/style.css"
 
 import {client} from "@/client";
-import {getProtyle} from "@/SiyuanUtils";
+import {getProtyle, truncateAtFootnote1} from "@/SiyuanUtils";
 import {SettingUtils} from "@/libs/setting-utils";
 
 
@@ -24,6 +20,13 @@ const ICON_NAME = "icon-park-outline--mindmap-map";
 const initialExpandLevelName = "initialExpandLevel";
 const lineWidthName = "lineWidth";
 const darkModeClassName = "markmap-dark";
+const markdownSourceMode = "markdownSourceMode";
+
+// type ConvertMode = "getDoc" | "exportMdContent"
+enum MarkdownSourceMode {
+    getDoc = "getDoc",
+    exportMdContent = "exportMdContent"
+}
 
 export default class SiYuanMarkmapViewPlugin extends Plugin {
 
@@ -62,6 +65,17 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             title: this.typedI18n.initialExpandLevel.title,
             description: this.typedI18n.initialExpandLevel.description,
         });
+        this.settingUtils.addItem({
+            key: markdownSourceMode,
+            value: MarkdownSourceMode.exportMdContent,
+            type: "select",
+            title: this.typedI18n.markdownSourceMode.title,
+            description: this.typedI18n.markdownSourceMode.description,
+            options: {
+                [MarkdownSourceMode.exportMdContent]: this.typedI18n.markdownSourceMode.exportMdContent,
+                [MarkdownSourceMode.getDoc]: this.typedI18n.markdownSourceMode.getDoc,
+            }
+        });
         // 线宽不太好设置，就用默认的了，默认也是递减的
         // this.settingUtils.addItem({
         //     key: lineWidthName,
@@ -87,18 +101,22 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
     async openMarkmapDialog() {
         this.initDarkTheme();
 
-        let protyle = this.getEditor().protyle;
+        let protyle: IProtyle = this.getEditor().protyle;
         const docId = protyle.block.rootID;
         const docInfoResp = await client.getDocInfo({id: docId})
-        const docResp = await client.getDoc({id: docId})
         let title: string = docInfoResp.data.name;
-        // console.log(protyle)
-        // const mdResp = await client.exportMdContent({id: docId})
-        // let markdown = mdResp.data.content;
-        let docHtmlContent = docResp.data.content;
-        let lute = window.Lute.New();
-        let mdContent = lute.BlockDOM2StdMd(docHtmlContent);
-        let markdown = mdContent
+
+        let mode = this.settingUtils.get(markdownSourceMode);
+        let markdown:string;
+        if (mode === MarkdownSourceMode.getDoc) {
+            const docResp = await client.getDoc({id: docId})
+            let docHtmlContent = docResp.data.content;
+            markdown = protyle.lute.BlockDOM2StdMd(docHtmlContent)
+        } else {
+            const mdResp = await client.exportMdContent({id: docId})
+            markdown = truncateAtFootnote1(mdResp.data.content);
+        }
+
         // console.log("markdown", markdown)
         // console.log("点击了生成思维导图", this.name, docId, this.getEditor().protyle, doc, markdown);
         const dialog = new Dialog({
@@ -134,12 +152,33 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         await mm.fit();
         let toolbar = Toolbar.create(mm);
         containerDiv.append(toolbar.el);
+        // toolbar.el.classList.add('button-panel');
+        let downloadSvgBtn = this.createDownloadBtn(mm, title);
+        toolbar.el.appendChild(downloadSvgBtn)
         // 自动聚焦，意义不大
         // setTimeout(() => {
         //     let dialogContainer= containerDiv
         //     dialogContainer.tabIndex = -1; // 使其可聚焦
         //     dialogContainer.focus({ preventScroll: true });
         // }, 100);
+    }
+
+    private createDownloadBtn(mm: Markmap, title: string) {
+        let downloadSvgBtn = document.createElement("div");
+        downloadSvgBtn.title = this.typedI18n.exportSvgImage
+        downloadSvgBtn.innerHTML = '🖼️'
+        downloadSvgBtn.classList.add('mm-toolbar-item')
+        downloadSvgBtn.addEventListener("click", () => {
+            let svg = new XMLSerializer().serializeToString(mm.svg.node());
+            let blob = new Blob([svg], {type: "image/svg+xml"});
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = title + ".markmap.svg";
+            a.click();
+            URL.revokeObjectURL(url);
+        })
+        return downloadSvgBtn;
     }
 
     async onunload() {
@@ -164,9 +203,9 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
 
     private initDarkTheme() {
         let html = document.documentElement;
-        if (html.getAttribute('data-theme-mode')==="dark"){
+        if (html.getAttribute('data-theme-mode') === "dark") {
             html.classList.add(darkModeClassName);
-        }else {
+        } else {
             this.cleanDarkModeClass();
         }
     }
