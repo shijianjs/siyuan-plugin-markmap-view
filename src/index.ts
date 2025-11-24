@@ -21,6 +21,7 @@ const initialExpandLevelName = "initialExpandLevel";
 const lineWidthName = "lineWidth";
 const darkModeClassName = "markmap-dark";
 const markdownSourceMode = "markdownSourceMode";
+const maxWidthName = 'maxWidth'
 
 // type ConvertMode = "getDoc" | "exportMdContent"
 enum MarkdownSourceMode {
@@ -66,6 +67,13 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             description: this.typedI18n.initialExpandLevel.description,
         });
         this.settingUtils.addItem({
+            key: maxWidthName,
+            value: 600,
+            type: "number",
+            title: this.typedI18n.maxWidth.title,
+            description: this.typedI18n.maxWidth.description,
+        });
+        this.settingUtils.addItem({
             key: markdownSourceMode,
             value: MarkdownSourceMode.exportMdContent,
             type: "select",
@@ -85,6 +93,10 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         //     description: this.typedI18n.lineWidth.description,
         // });
         await this.settingUtils.load(); //导入配置并合并
+    }
+
+    get maxWidth() {
+        return this.settingUtils.get(maxWidthName) ?? 600;
     }
 
     onLayoutReady() {
@@ -138,7 +150,8 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         let transformResult = transformer.transform(markdown);
         // console.log("transformResult", transformResult)
         const mm = Markmap.create(markmapSvg, {
-            initialExpandLevel: this.settingUtils.get(initialExpandLevelName),
+            initialExpandLevel: this.initialExpandLevel,
+            maxWidth: this.maxWidth,
             // 不太好设置，就用默认的了，默认也是递减的
             // lineWidth: (node)=>{
             //     let depth = node.state.depth;
@@ -161,6 +174,10 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         //     dialogContainer.tabIndex = -1; // 使其可聚焦
         //     dialogContainer.focus({ preventScroll: true });
         // }, 100);
+    }
+
+    get initialExpandLevel() {
+        return this.settingUtils.get(initialExpandLevelName);
     }
 
     private createDownloadBtn(mm: Markmap, title: string) {

@@ -17,7 +17,10 @@
 - 目前支持的配置项：
   - 默认展开层级
     - markmap默认展开多少层，这个层级后面折叠，-1表示不折叠；
-    - 针对单个文档的配置项是initialExpandLevel
+    - 针对单个文档的配置项是`initialExpandLevel`
+  - 最大宽度
+    - 节点内容的最大宽度，默认是600，设置为0不限制
+    - 针对单个文档的配置项是`maxWidth`
 
 ### 文档级配置
 参考：https://markmap.js.org/docs/json-options

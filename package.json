@@ -1,6 +1,6 @@
 {
   "name": "siyuan-plugin-markmap-view",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "type": "module",
   "description": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。",
   "repository": "https://github.com/shijianjs/siyuan-plugin-markmap-view",

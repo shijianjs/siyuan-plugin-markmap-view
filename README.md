@@ -20,6 +20,9 @@
     - Default Expand Level
         - How many levels markmap expands by default, levels after this will be collapsed, -1 means no collapse;
         - The configuration item for individual documents is `initialExpandLevel`
+    - Max Width
+        - The maximum width of node content, default is 600, set to 0 for no limit
+        - The configuration item for individual documents is `maxWidth`
 
 ### Document-level Configuration
 Reference: https://markmap.js.org/docs/json-options
