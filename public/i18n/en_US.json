@@ -1,13 +1,5 @@
 {
   "actionName": "Markmap Mind Map",
-  "initialExpandLevel": {
-    "title": "Initial Expand Level",
-    "description": "How many levels to expand by default when markmap initializes, levels after this will be collapsed, -1 means no collapse;\nConfiguration item for individual documents is initialExpandLevel, refer to: https://markmap.js.org/docs/json-options"
-  },
-  "lineWidth": {
-    "title": "Line Width",
-    "description": "Configure the line width of markmap"
-  },
   "exportSvgImage": "Export SVG Image",
   "markdownSourceMode": {
     "title": "Markdown Source Mode",
@@ -15,8 +7,60 @@
     "getDoc": "Page displayed content, getDoc API, cannot get collapsed blocks",
     "exportMdContent": "Export Markdown content, exportMdContent API, content is more complete, will remove some footnotes via regex, may (very small probability) cause impact"
   },
+  "color": {
+    "title": "Color List",
+    "description": "A list of colors to use as the branch and circle colors for each node. If none is provided, d3.schemeCategory10 will be used, default: d3.schemeCategory10, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "colorFreezeLevel": {
+    "title": "Color Freeze Level",
+    "description": "Freeze color at the specified level of branches, i.e. all child branches will use the color of their ancestor node at the freeze level. 0 for no freezing at all, default: 0, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "duration": {
+    "title": "Animation Duration",
+    "description": "The animation duration when folding/unfolding a node, default: 500, refer to: https://markmap.js.org/docs/json-options"
+  },
   "maxWidth": {
     "title": "Max Width",
-    "description": "The maximum width of node content, default is 600, set to 0 for no limit"
+    "description": "The max width of each node content. 0 for no limit, default: 0, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "initialExpandLevel": {
+    "title": "Initial Expand Level",
+    "description": "The maximum level of nodes to expand on initial render. -1 for expanding all levels, default: -1, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "extraJs": {
+    "title": "Extra JavaScript",
+    "description": "A list of JavaScript URLs. This is useful to add more features like Katex plugins, default: none, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "extraCss": {
+    "title": "Extra CSS",
+    "description": "A list of CSS URLs. This is useful to add more features like Katex plugins, default: none, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "zoom": {
+    "title": "Allow Zoom",
+    "description": "Whether to allow zooming the markmap, default: true, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "pan": {
+    "title": "Allow Pan",
+    "description": "Whether to allow panning the markmap, default: true, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "htmlParser": {
+    "title": "HTML Parser Options",
+    "description": "Pass options to the internal HTML parser, for example to override the default selectors for elements to display, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "spacingHorizontal": {
+    "title": "Horizontal Spacing",
+    "description": "Horizontal spacing between nodes, default: 80, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "spacingVertical": {
+    "title": "Vertical Spacing",
+    "description": "Vertical spacing between nodes, default: 5, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "activeNode": {
+    "title": "Active Node",
+    "description": "Settings for the active node. placement: 'visible' (ensure the active node is in the viewport) or 'center' (center the active node), default: { placement: 'visible' }, refer to: https://markmap.js.org/docs/json-options"
+  },
+  "lineWidth": {
+    "title": "Line Width",
+    "description": "The stroke width of lines between nodes, refer to: https://markmap.js.org/docs/json-options"
   }
 }

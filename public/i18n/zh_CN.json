@@ -1,13 +1,5 @@
 {
   "actionName": "Markmap思维导图",
-  "initialExpandLevel": {
-    "title": "默认展开层级",
-    "description": "markmap初始化时默认展开多少层，这个层级后面折叠，-1表示不折叠；针对单个文档的配置项是initialExpandLevel，可参考：https://markmap.js.org/docs/json-options"
-  },
-  "lineWidth": {
-    "title": "线条宽度",
-    "description": "配置markmap的线条宽度"
-  },
   "exportSvgImage": "导出SVG图片",
   "markdownSourceMode": {
     "title": "Markdown来源模式",
@@ -15,8 +7,60 @@
     "getDoc": "页面展示的内容，getDoc API，获取不到折叠的块",
     "exportMdContent": "导出Markdown内容，exportMdContent API，内容比较完整，会通过正则删掉一些脚注、可能（极小概率）会产生影响"
   },
+  "color": {
+    "title": "颜色列表",
+    "description": "用于每个节点分支和圆圈的颜色列表。如果未提供，将使用 d3.schemeCategory10，默认值：d3.schemeCategory10，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "colorFreezeLevel": {
+    "title": "颜色冻结层级",
+    "description": "在指定的分支层级冻结颜色，即所有子分支将使用该层级祖先节点的颜色。0 表示完全不冻结，默认值：0，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "duration": {
+    "title": "动画持续时间",
+    "description": "折叠/展开节点时的动画持续时间，默认值：500，可参考：https://markmap.js.org/docs/json-options"
+  },
   "maxWidth": {
     "title": "最大宽度",
-    "description": "节点内容的最大宽度，默认是600，设置为0不限制"
+    "description": "节点内容的最大宽度。0 表示不限制，默认值：0，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "initialExpandLevel": {
+    "title": "默认展开层级",
+    "description": "markmap初始化时默认展开的最大层级。-1表示展开所有层级，默认值：-1，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "extraJs": {
+    "title": "额外 JavaScript",
+    "description": "JavaScript URL 列表，用于添加 Katex 插件等更多功能，默认值：无，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "extraCss": {
+    "title": "额外 CSS",
+    "description": "CSS URL 列表，用于添加 Katex 插件等更多功能，默认值：无，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "zoom": {
+    "title": "允许缩放",
+    "description": "是否允许缩放 markmap，默认值：true，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "pan": {
+    "title": "允许平移",
+    "description": "是否允许平移 markmap，默认值：true，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "htmlParser": {
+    "title": "HTML 解析器选项",
+    "description": "传递选项给内部 HTML 解析器，例如覆盖默认显示的元素选择器，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "spacingHorizontal": {
+    "title": "水平间距",
+    "description": "节点之间的水平间距，默认值：80，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "spacingVertical": {
+    "title": "垂直间距",
+    "description": "节点之间的垂直间距，默认值：5，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "activeNode": {
+    "title": "激活节点",
+    "description": "激活节点的设置。placement: 'visible' (确保在视口中) 或 'center' (居中)，默认值：{ placement: 'visible' }，可参考：https://markmap.js.org/docs/json-options"
+  },
+  "lineWidth": {
+    "title": "线条宽度",
+    "description": "节点之间线条的粗细，可参考：https://markmap.js.org/docs/json-options"
   }
 }
