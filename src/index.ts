@@ -9,7 +9,7 @@ import "./index.scss";
 import "markmap-toolbar/dist/style.css"
 
 import {client} from "@/client";
-import {getProtyle, truncateAtFootnote1} from "@/SiyuanUtils";
+import {getProtyle, removeUntilFirstH1, truncateAtFootnote1} from "@/SiyuanUtils";
 import {SettingUtils} from "@/libs/setting-utils";
 
 
@@ -231,6 +231,8 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         } else {
             const mdResp = await client.exportMdContent({id: docId})
             markdown = truncateAtFootnote1(mdResp.data.content);
+            markdown = removeUntilFirstH1(markdown);
+            console.log("markdown", markdown)
         }
 
         // console.log("markdown", markdown)

@@ -24,3 +24,29 @@ export function truncateAtFootnote1(content: string): string {
     const regex = /^[ \t]*\[\^1\]:[\s\S]*$/m;
     return content.replace(regex, '');
 }
+
+/**
+ * 移除 markdown 内容中第一个一级标题及之前的所有内容
+ * @param markdownContent - 完整的 markdown 内容
+ * @returns 移除头部后的内容，从第一个一级标题之后开始
+ */
+export function removeUntilFirstH1(markdownContent: string): string {
+    const lines = markdownContent.split('\n');
+    let firstH1Index = -1;
+
+    // 查找第一个一级标题
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith('# ')) {
+            firstH1Index = i;
+            break;
+        }
+    }
+
+    // 如果没有找到一级标题，返回空字符串
+    if (firstH1Index === -1) {
+        return '';
+    }
+
+    // 返回从第一个一级标题之后的内容
+    return lines.slice(firstH1Index + 1).join('\n').trimStart();
+}

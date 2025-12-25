@@ -16,13 +16,8 @@
 ### Global Configuration
 - Operation
     - Click the plugin's configuration button
-- Currently supported configuration items:
-    - Default Expand Level
-        - How many levels markmap expands by default, levels after this will be collapsed, -1 means no collapse;
-        - The configuration item for individual documents is `initialExpandLevel`
-    - Max Width
-        - The maximum width of node content, default is 600, set to 0 for no limit
-        - The configuration item for individual documents is `maxWidth`
+- Supports most official configuration options:
+    - Thanks to [adadaadadade](https://github.com/adadaadadade) for providing the [pr](https://github.com/shijianjs/siyuan-plugin-markmap-view/pull/9)
 
 ### Document-level Configuration
 Reference: https://markmap.js.org/docs/json-options
