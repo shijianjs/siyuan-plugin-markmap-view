@@ -17,11 +17,29 @@ const transformer = new Transformer();
 
 const ICON_NAME = "icon-park-outline--mindmap-map";
 
-const initialExpandLevelName = "initialExpandLevel";
-const lineWidthName = "lineWidth";
 const darkModeClassName = "markmap-dark";
-const markdownSourceMode = "markdownSourceMode";
-const maxWidthName = 'maxWidth'
+
+const markdownSourceModeName = "markdownSourceMode";
+
+const colorName = "color";
+const colorFreezeLevelName = "colorFreezeLevel";
+const durationName = "duration";
+const maxWidthName = "maxWidth";
+const initialExpandLevelName = "initialExpandLevel";
+const extraJsName = "extraJs";
+const extraCssName = "extraCss";
+const zoomName = "zoom";
+const panName = "pan";
+const htmlParserName = "htmlParser";
+const spacingHorizontalName = "spacingHorizontal";
+const spacingVerticalName = "spacingVertical";
+const activeNodeName = "activeNode";
+const lineWidthName = "lineWidth";
+
+enum ActiveNode {
+    visible = "visible",
+    center = "center"
+}
 
 // type ConvertMode = "getDoc" | "exportMdContent"
 enum MarkdownSourceMode {
@@ -60,21 +78,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             plugin: this
         });
         this.settingUtils.addItem({
-            key: initialExpandLevelName,
-            value: 4,
-            type: "number",
-            title: this.typedI18n.initialExpandLevel.title,
-            description: this.typedI18n.initialExpandLevel.description,
-        });
-        this.settingUtils.addItem({
-            key: maxWidthName,
-            value: 600,
-            type: "number",
-            title: this.typedI18n.maxWidth.title,
-            description: this.typedI18n.maxWidth.description,
-        });
-        this.settingUtils.addItem({
-            key: markdownSourceMode,
+            key: markdownSourceModeName,
             value: MarkdownSourceMode.exportMdContent,
             type: "select",
             title: this.typedI18n.markdownSourceMode.title,
@@ -84,6 +88,106 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
                 [MarkdownSourceMode.getDoc]: this.typedI18n.markdownSourceMode.getDoc,
             }
         });
+
+        // settings for markmap options
+
+        // this.settingUtils.addItem({
+        //     key: colorName,
+        //     value: "",
+        //     type: "",
+        //     title: this.typedI18n.color.title,
+        //     description: this.typedI18n.color.description,
+        // });
+        this.settingUtils.addItem({
+            key: colorFreezeLevelName,
+            value: 2,
+            type: "number",
+            title: this.typedI18n.colorFreezeLevel.title,
+            description: this.typedI18n.colorFreezeLevel.description,
+        });
+        this.settingUtils.addItem({
+            key: durationName,
+            value: 500,
+            type: "number",
+            title: this.typedI18n.duration.title,
+            description: this.typedI18n.duration.description,
+        });
+        this.settingUtils.addItem({
+            key: maxWidthName,
+            value: 600,
+            type: "number",
+            title: this.typedI18n.maxWidth.title,
+            description: this.typedI18n.maxWidth.description,
+        });
+        this.settingUtils.addItem({
+            key: initialExpandLevelName,
+            value: 4,
+            type: "number",
+            title: this.typedI18n.initialExpandLevel.title,
+            description: this.typedI18n.initialExpandLevel.description,
+        });
+        // this.settingUtils.addItem({
+        //     key: extraJsName,
+        //     value: "",
+        //     type: "textarea",
+        //     title: this.typedI18n.extraJs.title,
+        //     description: this.typedI18n.extraJs.description,
+        //     placeholder: `// Example:\nconsole.log("Hello Markmap!");`,
+        // });
+        // this.settingUtils.addItem({
+        //     key: extraCssName,
+        //     value: "",
+        //     type: "textarea",
+        //     title: this.typedI18n.extraCss.title,
+        //     description: this.typedI18n.extraCss.description,
+        //     placeholder: `/* Example: */\n.markmap-node { fill: red; }`,
+        // });
+        this.settingUtils.addItem({
+            key: zoomName,
+            value: true,
+            type: "checkbox",
+            title: this.typedI18n.zoom.title,
+            description: this.typedI18n.zoom.description,
+        });
+        this.settingUtils.addItem({
+            key: panName,
+            value: true,
+            type: "checkbox",
+            title: this.typedI18n.pan.title,
+            description: this.typedI18n.pan.description,
+        });
+        // this.settingUtils.addItem({
+        //     key: htmlParserName,
+        //     value: "",
+        //     type: "",
+        //     title: this.typedI18n.htmlParser.title,
+        //     description: this.typedI18n.htmlParser.description,
+        // });
+        this.settingUtils.addItem({
+            key: spacingHorizontalName,
+            value: 80,
+            type: "number",
+            title: this.typedI18n.spacingHorizontal.title,
+            description: this.typedI18n.spacingHorizontal.description,
+        });
+        this.settingUtils.addItem({
+            key: spacingVerticalName,
+            value: 5,
+            type: "number",
+            title: this.typedI18n.spacingVertical.title,
+            description: this.typedI18n.spacingVertical.description,
+        });
+        // this.settingUtils.addItem({
+        //     key: activeNodeName,
+        //     value: ActiveNode.visible,
+        //     type: "select",
+        //     title: this.typedI18n.activeNode.title,
+        //     description: this.typedI18n.activeNode.description,
+        //     options: {
+        //         [ActiveNode.visible]: ActiveNode.visible,
+        //         [ActiveNode.center]: ActiveNode.center,
+        //     }
+        // });
         // 线宽不太好设置，就用默认的了，默认也是递减的
         // this.settingUtils.addItem({
         //     key: lineWidthName,
@@ -118,7 +222,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         const docInfoResp = await client.getDocInfo({id: docId})
         let title: string = docInfoResp.data.name;
 
-        let mode = this.settingUtils.get(markdownSourceMode);
+        let mode = this.settingUtils.get(markdownSourceModeName);
         let markdown:string;
         if (mode === MarkdownSourceMode.getDoc) {
             const docResp = await client.getDoc({id: docId})
@@ -149,9 +253,16 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         const markmapSvg = dialog.element.querySelector(".markmap-view-svg");
         let transformResult = transformer.transform(markdown);
         // console.log("transformResult", transformResult)
-        const mm = Markmap.create(markmapSvg, {
-            initialExpandLevel: this.initialExpandLevel,
+        const mm = Markmap.create(markmapSvg, deriveOptions({
+            colorFreezeLevel: this.settingUtils.get(colorFreezeLevelName),
+            duration: this.settingUtils.get(durationName),
             maxWidth: this.maxWidth,
+            initialExpandLevel: this.settingUtils.get(initialExpandLevelName),
+            zoom: this.settingUtils.get(zoomName),
+            pan: this.settingUtils.get(panName),
+            spacingHorizontal: this.settingUtils.get(spacingHorizontalName),
+            spacingVertical: this.settingUtils.get(spacingVerticalName),
+            
             // 不太好设置，就用默认的了，默认也是递减的
             // lineWidth: (node)=>{
             //     let depth = node.state.depth;
@@ -159,7 +270,7 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
             //     w = Math.max(w, 1);
             //     return w;
             // },
-        });
+        }));
         transformResult.root.content = title
         await mm.setData(transformResult.root, deriveOptions(transformResult.frontmatter?.markmap ?? {}));
         await mm.fit();
@@ -176,8 +287,32 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
         // }, 100);
     }
 
+    get colorFreezeLevel() {
+        return this.settingUtils.get(colorFreezeLevelName);
+    }
+
+    get duration() {
+        return this.settingUtils.get(durationName);
+    }
+
     get initialExpandLevel() {
         return this.settingUtils.get(initialExpandLevelName);
+    }
+
+    get spacingHorizontal() {
+        return this.settingUtils.get(spacingHorizontalName);
+    }
+
+    get spacingVertical() {
+        return this.settingUtils.get(spacingVerticalName);
+    }
+
+    get zoom() {
+        return this.settingUtils.get(zoomName);
+    }
+
+    get pan() {
+        return this.settingUtils.get(panName);
     }
 
     private createDownloadBtn(mm: Markmap, title: string) {
