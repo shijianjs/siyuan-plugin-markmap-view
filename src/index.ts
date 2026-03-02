@@ -440,6 +440,9 @@ class MarkmapRender {
         await mm.setData(transformResult.root, deriveOptions(transformResult.frontmatter?.markmap ?? {}));
         await mm.fit();
         let toolbar = Toolbar.create(mm);
+        for (let elementsByClassNameElement of containerDiv.getElementsByClassName("mm-toolbar")) {
+            elementsByClassNameElement.remove()
+        }
         containerDiv.append(toolbar.el);
         // toolbar.el.classList.add('button-panel');
         let downloadSvgBtn = this.createDownloadBtn(mm, this.title);
