@@ -1,6 +1,7 @@
 {
   "actionName": "Markmap思维导图",
   "exportSvgImage": "导出SVG图片",
+  "syncMdContent": "同步当前文档内容",
   "markdownSourceMode": {
     "title": "Markdown来源模式",
     "description": "两种Markdown文档来源方式，一种有问题的话可以试试另一种",
