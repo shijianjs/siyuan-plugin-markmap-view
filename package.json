@@ -1,6 +1,6 @@
 {
   "name": "siyuan-plugin-markmap-view",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "type": "module",
   "description": "思源 markmap 视图插件，以思维导图的形式展示当前笔记。",
   "repository": "https://github.com/shijianjs/siyuan-plugin-markmap-view",
@@ -13,6 +13,7 @@
     "make-link": "node --no-warnings ./scripts/make_dev_link.js",
     "make-link-win": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/elevate.ps1 -scriptPath ./scripts/make_dev_link.js",
     "update-version": "node --no-warnings ./scripts/update_version.js",
+    "git_commits": "git log --oneline --decorate --all --graph > dist/git_commits.txt",
     "make-install": "vite build && node --no-warnings ./scripts/make_install.js"
   },
   "devDependencies": {

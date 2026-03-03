@@ -36,6 +36,21 @@ SiYuan note markdown content
 
 ```
 
+## Changelog
+
+| Version | Changes |
+|---------|---------|
+| v1.6.1 | Fix toolbar duplicate display issue |
+| v1.6.0 | Support opening in side window |
+| v1.5.0 | Fix markdown export mode config issues, add multiple configuration options |
+| v1.4.0 | Add node max width config, support auto word wrap |
+| v1.3.0 | Export image feature, improve collapsed node display |
+| v1.2.0 | Adaptive light/dark theme |
+| v1.1.0 | Keyboard shortcut support, default collapse level config |
+| v1.0.1 | Multiple optimizations, fix block reference nesting |
+| v1.0.0 | 🎉 Initial release |
+
+
 ## Credits
 
 - [markmap](https://markmap.js.org/)
