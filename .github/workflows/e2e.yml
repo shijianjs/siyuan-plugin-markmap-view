@@ -63,12 +63,16 @@ jobs:
             "https://github.com/siyuan-note/siyuan/releases/download/v${SIYUAN_VERSION}/siyuan-${SIYUAN_VERSION}-linux.AppImage"
           chmod +x siyuan.AppImage
           ./siyuan.AppImage --appimage-extract > /dev/null
-          # the AppDir layout differs between releases, so locate the kernel and app dir
+          # the AppDir layout differs between releases, so locate the kernel and the app dir
           KERNEL=$(find squashfs-root -type f -name 'SiYuan-Kernel' | head -1)
+          DESKTOP_BUILD=$(find squashfs-root -type d -path '*/app/stage/build/desktop' | head -1)
+          APP_DIR=$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$DESKTOP_BUILD")")")")")
+          echo "kernel=$KERNEL" >&2
+          echo "desktop build=$DESKTOP_BUILD" >&2
+          echo "app dir=$APP_DIR" >&2
           echo "SIYUAN_KERNEL=${KERNEL}" >> "$GITHUB_ENV"
-          APP_DIR=$(dirname "$(dirname "$KERNEL")")
           echo "SIYUAN_APP_DIR=${APP_DIR}" >> "$GITHUB_ENV"
-          ls "$KERNEL" "$APP_DIR/app/stage/build/desktop" | head -20
+          test -f "${APP_DIR}/app/stage/build/desktop/index.html"
 
       - name: Start SiYuan kernel
         run: |
