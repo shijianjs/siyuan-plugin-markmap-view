@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      # setup-node 鐨?pnpm 缂撳瓨渚濊禆 pnpm 宸茬粡瀛樺湪锛屽洜姝ゅ繀椤诲厛瀹夎 pnpm
+      # setup-node's pnpm cache requires pnpm to exist, so install pnpm first
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -37,7 +37,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile --config.dangerouslyAllowAllBuilds=true
 
-      # 娴嬭瘯鐩存帴杩愯宸ヤ綔绌洪棿閲岀殑 dev/ 浜х墿锛屽洜姝ゅ繀椤诲厛鍋氫竴娆℃€у紑鍙戞瀯寤?      - name: Build development bundle
+      # the tests run the workspace copy of dev/, so build it once before starting the kernel
+      - name: Build development bundle
         run: pnpm build:dev
 
       - name: Prepare SiYuan workspace
@@ -71,12 +72,11 @@ jobs:
           SIYUAN_BASE_URL: http://127.0.0.1:6806
         run: pnpm test:only
 
-      - name: Collect workspace snapshot on failure
+      - name: Collect kernel log on failure
         if: failure()
         run: |
           docker logs siyuan > siyuan-kernel.log 2>&1 || true
-          docker exec siyuan sh -c 'ls -R /siyuan/workspace/data/plugins/siyuan-plugin-markmap-view' \
-            > siyuan-plugin-tree.log 2>&1 || true
+          ls -R ci-workspace/data/plugins/siyuan-plugin-markmap-view > siyuan-plugin-tree.log 2>&1 || true
 
       - name: Upload artifacts on failure
         if: failure()
