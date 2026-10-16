@@ -16,11 +16,15 @@ concurrency:
   group: e2e-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  SIYUAN_VERSION: 3.8.7
+  SIYUAN_PORT: 6806
+
 jobs:
   playwright:
     name: Playwright integration tests
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
 
     steps:
       - name: Checkout
@@ -51,15 +55,25 @@ jobs:
           mkdir -p ci-workspace/data/plugins/siyuan-plugin-markmap-view
           cp -r dev/. ci-workspace/data/plugins/siyuan-plugin-markmap-view/
 
+      # The kernel must serve the desktop frontend build: the browser build intentionally
+      # disables plugins, so tests would never see the petal UI.
+      - name: Download SiYuan desktop bundle
+        run: |
+          curl -fsSL -o siyuan.AppImage \
+            "https://github.com/siyuan-note/siyuan/releases/download/v${SIYUAN_VERSION}/siyuan-v${SIYUAN_VERSION}-linux-amd64.AppImage"
+          chmod +x siyuan.AppImage
+          ./siyuan.AppImage --appimage-extract > /dev/null
+          ls squashfs-root/siyuan/kernel
+
       - name: Start SiYuan kernel
         run: |
-          docker run -d --name siyuan \
-            -e SIYUAN_ACCESS_AUTH_CODE_BYPASS=true \
-            -v "${GITHUB_WORKSPACE}/ci-workspace:/siyuan/workspace" \
-            -p 6806:6806 \
-            b3log/siyuan:latest
+          ./squashfs-root/siyuan/kernel/SiYuan-Kernel \
+            --workspace="${GITHUB_WORKSPACE}/ci-workspace" serve \
+            --wd="${GITHUB_WORKSPACE}/squashfs-root/siyuan" \
+            --port="${SIYUAN_PORT}" > siyuan-kernel.log 2>&1 &
+          echo $! > siyuan-kernel.pid
           for i in $(seq 1 60); do
-            if curl -s -X POST http://127.0.0.1:6806/api/system/getWorkspaceInfo \
+            if curl -s -X POST "http://127.0.0.1:${SIYUAN_PORT}/api/system/getWorkspaceInfo" \
               -H 'Content-Type: application/json' -d '{}' | grep -q '"code":0'; then
               echo "SiYuan kernel is ready"
               exit 0
@@ -67,7 +81,7 @@ jobs:
             sleep 2
           done
           echo "SiYuan kernel did not become ready"
-          docker logs siyuan
+          tail -50 siyuan-kernel.log
           exit 1
 
       - name: Install Playwright browser
@@ -75,21 +89,18 @@ jobs:
 
       - name: Run Playwright tests
         env:
-          SIYUAN_BASE_URL: http://127.0.0.1:6806
-          PW_ARGS: ${{ inputs.spec }}
+          SIYUAN_BASE_URL: http://127.0.0.1:${{ env.SIYUAN_PORT }}
         run: pnpm test:only ${{ inputs.spec }}
 
       - name: Collect kernel log on failure
         if: failure()
         run: |
-          docker logs siyuan > siyuan-kernel.log 2>&1 || true
-          ls -R ci-workspace/data/plugins/siyuan-plugin-markmap-view > siyuan-plugin-tree.log 2>&1 || true
+          tail -80 siyuan-kernel.log || true
+          ls -R ci-workspace/data/plugins/siyuan-plugin-markmap-view || true
           echo "---- plugin tree ----"
-          cat siyuan-plugin-tree.log
-          echo "---- kernel log (filtered) ----"
-          grep -iE "plugin|petal|error" siyuan-kernel.log | tail -50 || true
-          echo "---- page snapshot (first failure) ----"
-          find test-results -name 'error-context.md' -print -quit -exec head -60 {} \; || true
+          ls ci-workspace/data/plugins/siyuan-plugin-markmap-view
+          echo "---- frontend assets ----"
+          ls squashfs-root/siyuan/app/stage/build/desktop | head -20
 
       - name: Upload artifacts on failure
         if: failure()
@@ -100,5 +111,4 @@ jobs:
             playwright-report
             test-results
             siyuan-kernel.log
-            siyuan-plugin-tree.log
           retention-days: 7
