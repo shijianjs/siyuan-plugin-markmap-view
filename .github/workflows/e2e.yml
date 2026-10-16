@@ -64,8 +64,10 @@ jobs:
           chmod +x siyuan.AppImage
           ./siyuan.AppImage --appimage-extract > /dev/null
           # the AppDir layout differs between releases, so locate the kernel and the app dir
+          find squashfs-root -maxdepth 5 -type d -name 'stage' | head -5 >&2 || true
+          ls squashfs-root/resources | head -20 >&2 || true
           KERNEL=$(find squashfs-root -type f -name 'SiYuan-Kernel' | head -1)
-          DESKTOP_BUILD=$(find squashfs-root -type d -path '*/app/stage/build/desktop' | head -1)
+          DESKTOP_BUILD=$(find squashfs-root -type d -name 'desktop' -path '*stage/build*' | head -1)
           APP_DIR=$(dirname "$(dirname "$(dirname "$(dirname "$(dirname "$DESKTOP_BUILD")")")")")
           echo "kernel=$KERNEL" >&2
           echo "desktop build=$DESKTOP_BUILD" >&2
