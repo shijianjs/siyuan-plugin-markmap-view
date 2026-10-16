@@ -1,7 +1,7 @@
 name: Auto Merge
 
 # Dependabot (and any other) pull requests are merged automatically once every
-# required check has succeeded. Nothing is merged while a check is pending or failing.
+# required check has succeeded. This workflow's own check is ignored while waiting.
 
 on:
   pull_request_target:
@@ -23,14 +23,15 @@ jobs:
   merge:
     name: Merge when checks pass
     runs-on: ubuntu-latest
-    # Wait long enough for slow runs (SiYuan kernel download plus Playwright).
-    timeout-minutes: 60
+    # Wait long enough for slow runs (SiYuan bundle download plus Playwright).
+    timeout-minutes: 45
     steps:
       - name: Wait for checks and merge
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          SELF_JOB: Merge when checks pass
           MERGE_METHOD: squash
         run: |
           set -euo pipefail
@@ -41,21 +42,17 @@ jobs:
             exit 0
           fi
 
-          # Wait until no check is queued or in progress.
+          # Poll the check list, ignoring this workflow's own check, which can never
+          # reach SUCCESS while this job is still running.
           while true; do
-            pending=$(gh pr checks "$pr" --json state --jq '[.[] | select(.state != "SUCCESS" and .state != "SKIPPED")] | length' 2>/dev/null || echo 1)
-            if [ "$pending" = "0" ]; then
+            mapfile -t pending < <(gh pr checks "$pr" --json name,state --jq \
+              ".[] | select(.name != \"$SELF_JOB\") | select(.state != \"SUCCESS\" and .state != \"SKIPPED\") | .name")
+            if [ "${#pending[@]}" -eq 0 ]; then
               break
             fi
-            echo "waiting for $pending check(s) on PR #$pr"
-            sleep 30
+            echo "waiting for: ${pending[*]}"
+            sleep 20
           done
-
-          failed=$(gh pr checks "$pr" --json state,bucket --jq '[.[] | select(.bucket != "pass" and .bucket != "skipping")] | length' 2>/dev/null || echo 1)
-          if [ "$failed" != "0" ]; then
-            echo "checks did not pass for PR #$pr, leaving it open"
-            exit 0
-          fi
 
           if [ "$(gh pr view "$pr" --json mergeable --jq .mergeable)" != "MERGEABLE" ]; then
             echo "PR #$pr is not mergeable yet"
