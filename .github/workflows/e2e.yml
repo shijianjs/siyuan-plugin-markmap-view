@@ -60,7 +60,7 @@ jobs:
       - name: Download SiYuan desktop bundle
         run: |
           curl -fsSL -o siyuan.AppImage \
-            "https://github.com/siyuan-note/siyuan/releases/download/v${SIYUAN_VERSION}/siyuan-v${SIYUAN_VERSION}-linux-amd64.AppImage"
+            "https://github.com/siyuan-note/siyuan/releases/download/v${SIYUAN_VERSION}/siyuan-${SIYUAN_VERSION}-linux.AppImage"
           chmod +x siyuan.AppImage
           ./siyuan.AppImage --appimage-extract > /dev/null
           ls squashfs-root/siyuan/kernel
