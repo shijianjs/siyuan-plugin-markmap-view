@@ -114,7 +114,13 @@ jobs:
 
       - name: Report kernel plugin log
         if: always()
-        run: grep -iE "petal|plugin|manifest" siyuan-kernel.log | tail -30 || true
+        run: |
+          grep -iE "petal|plugin|manifest" siyuan-kernel.log | tail -30 || true
+          echo "---- served frontend ----"
+          curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/" | grep -o 'main\.[a-z0-9]*\.js' | head -3 || true
+          curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/" | grep -o 'main\.[a-z0-9]*\.js' | while read -r asset; do
+            curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/${asset}" | grep -c "loadPetals" || true
+          done
 
       - name: Upload artifacts on failure
         if: failure()
