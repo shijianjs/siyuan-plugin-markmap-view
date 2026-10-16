@@ -16,17 +16,29 @@ fixture("plugin diagnostics", async ({page, siyuanAPI}) => {
     await openWorkspace(page);
     await page.locator("#barPlugins").click();
     await page.waitForTimeout(2000);
-    const state = await page.evaluate(() => ({
-        container: window.siyuan.config.system.container,
-        petalDisabled: (window.siyuan.config.bazaar as {petalDisabled?: boolean} | undefined)?.petalDisabled,
-        dockTypes: [...document.querySelectorAll(".dock__item[data-type]")]
-            .map(element => (element as HTMLElement).dataset.type),
-        menuIds: [...document.querySelectorAll('.b3-menu[data-name="topBarPlugin"] [data-id]')]
-            .map(element => (element as HTMLElement).dataset.id),
-        pluginStyles: [...document.querySelectorAll('[id^="pluginsStyle"]')].map(element => element.id),
-        pluginJs: [...(window as never as {siyuan: {storage?: Record<string, unknown>}}).siyuan.storage ?
-            Object.keys((window as never as {siyuan: {storage: Record<string, unknown>}}).siyuan.storage) : []],
-    }));
+    const state = await page.evaluate(async () => {
+        const response = await fetch("/api/petal/loadPetals", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({frontend: "browser-desktop"}),
+        });
+        const petals = await response.json();
+        return {
+            hasIpcRenderer: typeof (window as never as {ipcRenderer?: unknown}).ipcRenderer,
+            hasRequire: typeof (window as never as {require?: unknown}).require,
+            userAgent: navigator.userAgent,
+            url: location.href,
+            remoteQuery: location.search,
+            petalNames: Array.isArray(petals.data) ? petals.data.map(item => item.name) : petals,
+            container: window.siyuan.config.system.container,
+            petalDisabled: (window.siyuan.config.bazaar as {petalDisabled?: boolean} | undefined)?.petalDisabled,
+            dockTypes: [...document.querySelectorAll(".dock__item[data-type]")]
+                .map(element => (element as HTMLElement).dataset.type),
+            menuIds: [...document.querySelectorAll('.b3-menu[data-name="topBarPlugin"] [data-id]')]
+                .map(element => (element as HTMLElement).dataset.id),
+            pluginStyles: [...document.querySelectorAll('[id^="pluginsStyle"]')].map(element => element.id),
+        };
+    });
     console.log("DIAG " + JSON.stringify(state));
     console.log("LOGS " + logs.slice(-60).join("\n"));
     const installed = await siyuanAPI.getInstalledPlugin(PLUGIN_NAME);
