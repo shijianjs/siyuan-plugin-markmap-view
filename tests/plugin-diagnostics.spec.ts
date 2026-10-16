@@ -2,8 +2,19 @@ import {expect, test} from "@playwright/test";
 import {openWorkspace, PLUGIN_NAME} from "./helpers/runtime";
 import {test as fixture} from "./fixtures";
 
-/**
- * 诊断用例：打印内核/前端识别到的插件信息与浏览器日志，
+const loadPetals = async (page: import("@playwright/test").Page, frontend: string) =>
+    page.evaluate(async name => {
+        const response = await fetch("/api/petal/loadPetals", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({frontend: name}),
+        });
+        const petals = await response.json();
+        return {code: petals.code, msg: petals.msg, names: Array.isArray(petals.data) ?
+            petals.data.map((item: {name: string}) => item.name) : petals.data};
+    }, frontend);
+
+/** 诊断用例：打印内核/前端识别到的插件信息与浏览器日志，
  * 用于在 CI 上定位「插件已安装但界面未出现」这类问题。
  */
 fixture("plugin diagnostics", async ({page, siyuanAPI}) => {
@@ -41,6 +52,11 @@ fixture("plugin diagnostics", async ({page, siyuanAPI}) => {
     });
     console.log("DIAG " + JSON.stringify(state));
     console.log("LOGS " + logs.slice(-60).join("\n"));
+    const frontends = {};
+    for (const frontend of ["browser-desktop", "desktop", "desktop-window"]) {
+        frontends[frontend] = await loadPetals(page, frontend);
+    }
+    console.log("FRONTENDS " + JSON.stringify(frontends));
     const installed = await siyuanAPI.getInstalledPlugin(PLUGIN_NAME);
     console.log("INSTALLED enabled=" + String(installed?.enabled));
     expect(state.dockTypes.length).toBeGreaterThan(0);
