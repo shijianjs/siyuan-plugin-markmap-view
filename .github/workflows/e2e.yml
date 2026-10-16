@@ -82,6 +82,8 @@ jobs:
           cat siyuan-plugin-tree.log
           echo "---- kernel log (filtered) ----"
           grep -iE "plugin|petal|error" siyuan-kernel.log | tail -50 || true
+          echo "---- page snapshot (first failure) ----"
+          find test-results -name 'error-context.md' -print -quit -exec head -60 {} \; || true
 
       - name: Upload artifacts on failure
         if: failure()
