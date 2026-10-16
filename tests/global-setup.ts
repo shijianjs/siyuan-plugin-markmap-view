@@ -28,13 +28,14 @@ export default async function globalSetup() {
             bazaarChanged: false,
         };
 
-        // 新工作空间默认关闭全局插件开关，此时内核不会加载任何插件
+        // A fresh workspace has trust=false, and the kernel refuses to load petals until the user
+// confirms the marketplace trust. petalDisabled is the global plugin switch.
         const bazaar = await api.getBazaarConf();
-        if (bazaar.petalDisabled !== false) {
+        if (bazaar.petalDisabled !== false || bazaar.trust !== true) {
             state.bazaarConf = bazaar;
             await api.setBazaarConf({...bazaar, petalDisabled: false, trust: true});
             state.bazaarChanged = true;
-            console.log("[markmap-e2e] 已临时打开全局插件开关");
+            console.log("[markmap-e2e] 已临时打开集市信任与全局插件开关");
         }
 
         const plugin = await api.getInstalledPlugin(PLUGIN_NAME);
