@@ -10,6 +10,11 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: "Pull request number to try to merge"
+        required: true
 
 permissions:
   pull-requests: write
@@ -30,7 +35,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_NUMBER: ${{ github.event.inputs.pr || github.event.pull_request.number }}
           SELF_JOB: Merge when checks pass
           MERGE_METHOD: squash
         run: |
