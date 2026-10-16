@@ -112,6 +112,10 @@ jobs:
           echo "---- frontend assets ----"
           ls "${SIYUAN_APP_DIR}/stage/build/desktop" | head -20
 
+      - name: Report kernel plugin log
+        if: always()
+        run: grep -iE "petal|plugin|manifest" siyuan-kernel.log | tail -30 || true
+
       - name: Upload artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v5
