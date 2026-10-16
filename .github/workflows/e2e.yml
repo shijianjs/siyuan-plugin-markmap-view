@@ -64,14 +64,11 @@ jobs:
           chmod +x siyuan.AppImage
           ./siyuan.AppImage --appimage-extract > /dev/null
           # the AppDir layout differs between releases, so locate the kernel and the app dir
-          find squashfs-root -maxdepth 5 -type d -name 'stage' | head -5 >&2 || true
-          ls squashfs-root/resources | head -20 >&2 || true
+          # the AppDir layout differs between releases, so locate the kernel and app dir
           KERNEL=$(find squashfs-root -type f -name 'SiYuan-Kernel' | head -1)
           DESKTOP_BUILD=$(find squashfs-root -type d -name 'desktop' -path '*stage/build*' | head -1)
           APP_DIR=$(dirname "$(dirname "$(dirname "$DESKTOP_BUILD")")")
-          echo "kernel=$KERNEL" >&2
-          echo "desktop build=$DESKTOP_BUILD" >&2
-          echo "app dir=$APP_DIR" >&2
+          echo "kernel=$KERNEL, app dir=$APP_DIR" >&2
           echo "SIYUAN_KERNEL=${KERNEL}" >> "$GITHUB_ENV"
           echo "SIYUAN_APP_DIR=${APP_DIR}" >> "$GITHUB_ENV"
           test -f "${APP_DIR}/stage/build/desktop/index.html"
@@ -114,13 +111,7 @@ jobs:
 
       - name: Report kernel plugin log
         if: always()
-        run: |
-          grep -iE "petal|plugin|manifest" siyuan-kernel.log | tail -30 || true
-          echo "---- served frontend ----"
-          curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/" | grep -o 'main\.[a-z0-9]*\.js' | head -3 || true
-          curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/" | grep -o 'main\.[a-z0-9]*\.js' | while read -r asset; do
-            curl -s "http://127.0.0.1:${SIYUAN_PORT}/stage/build/desktop/${asset}" | grep -c "loadPetals" || true
-          done
+        run: grep -iE "petal|plugin|manifest" siyuan-kernel.log | tail -30 || true
 
       - name: Upload artifacts on failure
         if: failure()

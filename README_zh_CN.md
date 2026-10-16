@@ -61,6 +61,17 @@ markmap:
 - 成功的用例会删除自己创建的文档；失败、超时或中断时保留文档，并作为附件写入报告。
 - 停靠栏、设置面板等全局 UI 状态会在用例结束时恢复。
 
+### 持续集成
+
+`.github/workflows/e2e.yml` 在 push / PR 时自动运行同一套用例：
+
+1. 安装依赖并执行 `build:dev`，把产物复制到临时工作空间；
+2. 下载官方桌面版 AppImage，用其中的 `SiYuan-Kernel serve` 启动内核（必须使用桌面版前端资源，浏览器构建出于安全考虑不会加载插件）；
+3. 以 `SIYUAN_BASE_URL=http://127.0.0.1:6806` 运行 Playwright；
+4. 失败时上传 `playwright-report`、`test-results` 与内核日志。
+
+也可以手动触发并只跑单个文件：`gh workflow run e2e.yml -f spec=tests/markmap-dock.spec.ts`。
+
 ## 更新日志
 
 | 版本 | 主要更新 |

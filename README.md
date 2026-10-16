@@ -62,6 +62,17 @@ Test conventions:
 - Passing tests delete the documents they created; failed, timed-out, or interrupted runs preserve them and attach them to the report.
 - Global UI state (dock, settings panel) is restored after each test.
 
+### Continuous integration
+
+`.github/workflows/e2e.yml` runs the same suite on every push / pull request:
+
+1. install dependencies and run `build:dev`, copying the output into a throwaway workspace;
+2. download the official desktop AppImage and start `SiYuan-Kernel serve` from it (the desktop frontend assets are required, the browser build deliberately refuses to load plugins);
+3. run Playwright with `SIYUAN_BASE_URL=http://127.0.0.1:6806`;
+4. upload `playwright-report`, `test-results` and the kernel log on failure.
+
+A single file can be run manually: `gh workflow run e2e.yml -f spec=tests/markmap-dock.spec.ts`.
+
 ## Changelog
 
 | Version | Changes |
