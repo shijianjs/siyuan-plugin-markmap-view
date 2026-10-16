@@ -12,7 +12,7 @@
 
 ## 2. 本地开发环境
 
-- 本地思源内核：`http://127.0.0.1:8445`（工作空间 `S:\my\siyuan\siyuan-debug`）。可用 `SIYUAN_BASE_URL` 覆盖。
+- 本地思源内核：`http://127.0.0.1:8950`（工作空间 `S:\my\siyuan\siyuan-debug`）。可用 `SIYUAN_BASE_URL` 覆盖。
 - 工作空间里的插件目录是指向本仓库 `dev/` 的**符号链接**（`pnpm make-link`），所以本地改代码后要 `pnpm dev` 或 `pnpm build:dev` 才能生效。
 - 前端入口固定用 `/stage/build/desktop/`，不要改成浏览器版资源（原因见第 4 节）。
 

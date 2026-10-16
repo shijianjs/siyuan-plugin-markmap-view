@@ -38,7 +38,7 @@ markmap:
 
 ## 集成测试（Playwright）
 
-本仓库内置 Playwright 端到端测试，目标是**已运行的思源内核**（默认 `http://127.0.0.1:8445`，可用环境变量 `SIYUAN_BASE_URL` 覆盖）。
+本仓库内置 Playwright 端到端测试，目标是**已运行的思源内核**（默认 `http://127.0.0.1:8950`，可用环境变量 `SIYUAN_BASE_URL` 覆盖）。
 
 前置条件：
 

@@ -39,7 +39,7 @@ SiYuan note markdown content
 
 ## Integration tests (Playwright)
 
-This repository ships Playwright end-to-end tests that run against an **already running SiYuan kernel** (default `http://127.0.0.1:8445`, override with the `SIYUAN_BASE_URL` environment variable).
+This repository ships Playwright end-to-end tests that run against an **already running SiYuan kernel** (default `http://127.0.0.1:8950`, override with the `SIYUAN_BASE_URL` environment variable).
 
 Prerequisites:
 

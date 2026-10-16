@@ -2,7 +2,7 @@ import {expect, Page} from "@playwright/test";
 import {SiyuanAPI} from "./siyuanAPI";
 
 /** 本地思源测试内核地址，可用 SIYUAN_BASE_URL 覆盖。 */
-export const DEFAULT_BASE_URL = "http://127.0.0.1:8445";
+export const DEFAULT_BASE_URL = "http://127.0.0.1:8950";
 
 export const PLUGIN_NAME = "siyuan-plugin-markmap-view";
 /** 插件注册的快捷键（plugin.json 中的 ⌥⌘M，Windows 为 Ctrl+Alt+M）。 */
