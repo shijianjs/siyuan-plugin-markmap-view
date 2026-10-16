@@ -36,6 +36,31 @@ markmap:
 
 ```
 
+## 集成测试（Playwright）
+
+本仓库内置 Playwright 端到端测试，目标是**已运行的思源内核**（默认 `http://127.0.0.1:8445`，可用环境变量 `SIYUAN_BASE_URL` 覆盖）。
+
+前置条件：
+
+1. 思源内核已启动，并通过 `pnpm make-link`（或手动放置）把本仓库挂载到该工作空间的 `data/plugins/siyuan-plugin-markmap-view`。
+2. 插件在思源「插件」设置中已启用；若被禁用，测试启动时会临时启用，结束时自动恢复原状态。
+3. `pnpm exec playwright install chrome`（配置使用本机 Chrome 通道）。
+
+常用命令：
+
+| 命令 | 说明 |
+|------|------|
+| `pnpm test` | 先执行 `build:dev`（产物输出到 `dev/`），再运行全部测试 |
+| `pnpm test:only` | 不重新构建，直接运行测试 |
+| `pnpm test:headed` / `pnpm test:ui` | 有头 / UI 模式，便于调试 |
+| `pnpm test:typecheck` | 对测试代码做类型检查 |
+
+测试约定：
+
+- 所有文档都创建在 `Markmap E2E Testing` 笔记本中，标题带功能前缀与随机后缀。
+- 成功的用例会删除自己创建的文档；失败、超时或中断时保留文档，并作为附件写入报告。
+- 停靠栏、设置面板等全局 UI 状态会在用例结束时恢复。
+
 ## 更新日志
 
 | 版本 | 主要更新 |

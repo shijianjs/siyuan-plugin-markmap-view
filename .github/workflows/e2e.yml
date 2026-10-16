@@ -1,0 +1,91 @@
+name: E2E
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    name: Playwright integration tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile --config.dangerouslyAllowAllBuilds=true
+
+      # 测试直接运行工作空间里的 dev/ 产物，因此必须先做一次性开发构建
+      - name: Build development bundle
+        run: pnpm build:dev
+
+      - name: Prepare SiYuan workspace
+        run: |
+          mkdir -p ci-workspace/data/plugins/siyuan-plugin-markmap-view
+          cp -r dev/. ci-workspace/data/plugins/siyuan-plugin-markmap-view/
+
+      - name: Start SiYuan kernel
+        run: |
+          docker run -d --name siyuan \
+            -v "${GITHUB_WORKSPACE}/ci-workspace:/siyuan/workspace" \
+            -p 6806:6806 \
+            b3log/siyuan:latest
+          for i in $(seq 1 60); do
+            if curl -s -X POST http://127.0.0.1:6806/api/system/getWorkspaceInfo \
+              -H 'Content-Type: application/json' -d '{}' | grep -q '"code":0'; then
+              echo "SiYuan kernel is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "SiYuan kernel did not become ready"
+          docker logs siyuan
+          exit 1
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chrome
+
+      - name: Run Playwright tests
+        env:
+          SIYUAN_BASE_URL: http://127.0.0.1:6806
+        run: pnpm test:only
+
+      - name: Collect workspace snapshot on failure
+        if: failure()
+        run: |
+          docker logs siyuan > siyuan-kernel.log 2>&1 || true
+          docker exec siyuan sh -c 'ls -R /siyuan/workspace/data/plugins/siyuan-plugin-markmap-view' \
+            > siyuan-plugin-tree.log 2>&1 || true
+
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+            siyuan-kernel.log
+            siyuan-plugin-tree.log
+          retention-days: 7

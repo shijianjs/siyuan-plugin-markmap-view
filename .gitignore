@@ -9,3 +9,11 @@ dev
 dist
 build
 tmp
+test-results
+playwright-report
+blob-report
+playwright/.cache
+tests/.plugin-state.json
+ci-workspace
+siyuan-kernel.log
+siyuan-plugin-tree.log

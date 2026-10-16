@@ -37,6 +37,31 @@ SiYuan note markdown content
 
 ```
 
+## Integration tests (Playwright)
+
+This repository ships Playwright end-to-end tests that run against an **already running SiYuan kernel** (default `http://127.0.0.1:8445`, override with the `SIYUAN_BASE_URL` environment variable).
+
+Prerequisites:
+
+1. The kernel is running and this repository is linked into its workspace as `data/plugins/siyuan-plugin-markmap-view` (`pnpm make-link`).
+2. The plugin is enabled in the SiYuan marketplace settings; when disabled, the setup enables it temporarily and restores the previous state afterwards.
+3. `pnpm exec playwright install chrome` (the config uses the installed Chrome channel).
+
+Commands:
+
+| Command | Description |
+|---------|-------------|
+| `pnpm test` | Runs `build:dev` (output in `dev/`) and then the whole suite |
+| `pnpm test:only` | Runs the suite without rebuilding |
+| `pnpm test:headed` / `pnpm test:ui` | Headed / UI mode for debugging |
+| `pnpm test:typecheck` | Type checks the test code |
+
+Test conventions:
+
+- Documents are created in the `Markmap E2E Testing` notebook with a feature prefix and a unique suffix.
+- Passing tests delete the documents they created; failed, timed-out, or interrupted runs preserve them and attach them to the report.
+- Global UI state (dock, settings panel) is restored after each test.
+
 ## Changelog
 
 | Version | Changes |

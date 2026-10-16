@@ -11,6 +11,9 @@ import vitePluginYamlI18n from './yaml-plugin';
 const env = process.env;
 const isSrcmap = env.VITE_SOURCEMAP === 'inline';
 const isDev = env.NODE_ENV === 'development';
+// 仅在 watch 模式（pnpm dev）下启用 livereload 与外部文件监听，
+// 这样一次性开发构建（构建产物输出到 dev/，供集成测试使用）可以正常结束进程。
+const isDevWatch = isDev && env.WATCH === '1';
 
 const outputDir = isDev ? "dev" : "dist";
 
@@ -62,7 +65,7 @@ export default defineConfig({
         },
         rollupOptions: {
             plugins: [
-                ...(isDev ? [
+                ...(isDevWatch ? [
                     livereload(outputDir),
                     {
                         name: 'watch-external',

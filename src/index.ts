@@ -256,7 +256,6 @@ export default class SiYuanMarkmapViewPlugin extends Plugin {
                 dockMarkmapRender.contextElement = dock.element as HTMLElement
                 let refreshMarkdown = async () => {
                     console.log("refresh");
-                    dockMarkmapRender.mm?.destroy()
                     await dockMarkmapRender.init()
                     await dockMarkmapRender.renderMarkmap()
                 };
@@ -416,6 +415,10 @@ class MarkmapRender {
     async renderMarkmap() {
         const containerDiv: HTMLElement = this.contextElement.querySelector(".markmap-view-container");
         const markmapSvg = this.contextElement.querySelector(".markmap-view-svg");
+        // 重新渲染前先销毁旧实例并清空 svg，否则 markmap 节点会不断累积
+        this.mm?.destroy();
+        this.mm = undefined;
+        markmapSvg.innerHTML = "";
         let transformResult = transformer.transform(this.markdown);
         // console.log("transformResult", transformResult)
         const mm: Markmap = Markmap.create(markmapSvg, deriveOptions({
