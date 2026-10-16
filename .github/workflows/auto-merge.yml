@@ -1,0 +1,66 @@
+name: Auto Merge
+
+# Dependabot (and any other) pull requests are merged automatically once every
+# required check has succeeded. Nothing is merged while a check is pending or failing.
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+
+permissions:
+  pull-requests: write
+  contents: write
+
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  merge:
+    name: Merge when checks pass
+    runs-on: ubuntu-latest
+    # Wait long enough for slow runs (SiYuan kernel download plus Playwright).
+    timeout-minutes: 60
+    steps:
+      - name: Wait for checks and merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGE_METHOD: squash
+        run: |
+          set -euo pipefail
+          pr="$PR_NUMBER"
+
+          if [ "$(gh pr view "$pr" --json isDraft --jq .isDraft)" = "true" ]; then
+            echo "Draft pull request, nothing to merge"
+            exit 0
+          fi
+
+          # Wait until no check is queued or in progress.
+          while true; do
+            pending=$(gh pr checks "$pr" --json state --jq '[.[] | select(.state != "SUCCESS" and .state != "SKIPPED")] | length' 2>/dev/null || echo 1)
+            if [ "$pending" = "0" ]; then
+              break
+            fi
+            echo "waiting for $pending check(s) on PR #$pr"
+            sleep 30
+          done
+
+          failed=$(gh pr checks "$pr" --json state,bucket --jq '[.[] | select(.bucket != "pass" and .bucket != "skipping")] | length' 2>/dev/null || echo 1)
+          if [ "$failed" != "0" ]; then
+            echo "checks did not pass for PR #$pr, leaving it open"
+            exit 0
+          fi
+
+          if [ "$(gh pr view "$pr" --json mergeable --jq .mergeable)" != "MERGEABLE" ]; then
+            echo "PR #$pr is not mergeable yet"
+            exit 0
+          fi
+
+          gh pr merge "$pr" --"$MERGE_METHOD" --delete-branch
+          echo "merged PR #$pr"
