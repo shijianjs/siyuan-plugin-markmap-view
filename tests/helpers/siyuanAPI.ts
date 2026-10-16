@@ -17,6 +17,13 @@ export interface INotebook {
     closed: boolean;
 }
 
+/** 集市相关配置，petalDisabled 为全局插件开关。 */
+export interface IBazaarConf {
+    trust?: boolean;
+    petalDisabled?: boolean;
+    [key: string]: unknown;
+}
+
 export interface IDocumentEntry {
     id: string;
     name: string;
@@ -64,6 +71,17 @@ export class SiyuanAPI {
 
     async getWorkspaceInfo() {
         return this.post<IWorkspaceInfo>("/api/system/getWorkspaceInfo", {});
+    }
+
+    /** 读取全局配置（这里只用到集市相关字段）。 */
+    async getBazaarConf() {
+        const data = await this.post<{conf: {bazaar: IBazaarConf}}>("/api/system/getConf", {});
+        return data.conf.bazaar;
+    }
+
+    /** 写入全局配置；必须带上完整字段。 */
+    async setBazaarConf(bazaar: IBazaarConf) {
+        await this.post<IBazaarConf>("/api/setting/setBazaar", {...bazaar, app: "markmap-plugin-e2e"});
     }
 
     async listNotebooks() {
@@ -191,6 +209,12 @@ export class SiyuanAPI {
         const raw = typeof data === "string" ? JSON.parse(data) : data;
         const packages = (Array.isArray(raw) ? raw : raw?.packages) ?? [];
         return packages.find((plugin: {name: string}) => plugin.name === packageName);
+    }
+
+    /** 读取内核当前已加载的前端插件名。 */
+    async getLoadedPetals(frontend = "browser-desktop") {
+        const data = await this.post<Array<{name: string}> | null>("/api/petal/loadPetals", {frontend}, 30000);
+        return Array.isArray(data) ? data.map(petal => petal.name) : [];
     }
 
     /** 启用/禁用插件，返回是否执行了变更。 */
