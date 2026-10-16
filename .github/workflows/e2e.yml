@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      spec:
+        description: "Optional extra playwright args (for example: tests/markmap-dock.spec.ts)"
+        required: false
+        default: ""
 
 concurrency:
   group: e2e-${{ github.ref }}
@@ -71,7 +76,8 @@ jobs:
       - name: Run Playwright tests
         env:
           SIYUAN_BASE_URL: http://127.0.0.1:6806
-        run: pnpm test:only ${{ env.PW_ARGS }}
+          PW_ARGS: ${{ inputs.spec }}
+        run: pnpm test:only ${{ inputs.spec }}
 
       - name: Collect kernel log on failure
         if: failure()
