@@ -86,11 +86,12 @@ export default defineConfig({
                         patterns: ['i18n/*.yaml', 'i18n/*.md'],
                         distDir: outputDir
                     }),
-                    zipPack({
+                    // 只有正式构建才打包 zip；一次性开发构建（测试用）没有 dist 目录
+                    ...(env.NODE_ENV === 'production' ? [zipPack({
                         inDir: './dist',
                         outDir: './',
                         outFileName: 'package.zip'
-                    })
+                    })] : [])
                 ])
             ],
 

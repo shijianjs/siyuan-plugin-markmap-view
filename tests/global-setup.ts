@@ -42,7 +42,7 @@ export default async function globalSetup() {
         if (!plugin) {
             throw new Error(`插件 ${PLUGIN_NAME} 未安装到测试工作空间，请先执行 pnpm make-link 并重启内核。`);
         }
-        state.pluginEnabled = plugin.enabled;
+        state.pluginEnabled = Boolean(plugin.enabled);
         if (!plugin.enabled) {
             await api.setPluginEnabled(PLUGIN_NAME, true);
             state.pluginStateChanged = true;

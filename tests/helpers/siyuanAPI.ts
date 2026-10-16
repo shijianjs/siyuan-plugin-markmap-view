@@ -221,7 +221,7 @@ export class SiyuanAPI {
     async setPluginEnabled(packageName: string, enabled: boolean, frontend = "desktop") {
         await this.post<unknown>("/api/petal/setPetalEnabled", {
             packageName,
-            enabled,
+            enabled: Boolean(enabled),
             frontend,
             app: "markmap-plugin-e2e",
         }, 30000);
