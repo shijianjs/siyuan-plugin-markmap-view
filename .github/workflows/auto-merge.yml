@@ -59,7 +59,15 @@ jobs:
             sleep 20
           done
 
-          if [ "$(gh pr view "$pr" --json mergeable --jq .mergeable)" != "MERGEABLE" ]; then
+          # GitHub computes mergeability asynchronously, so give it a few attempts.
+          mergeable=""
+          for _ in $(seq 1 10); do
+            mergeable=$(gh pr view "$pr" --json mergeable --jq .mergeable)
+            [ "$mergeable" = "MERGEABLE" ] && break
+            echo "PR #$pr mergeable=$mergeable, retrying"
+            sleep 15
+          done
+          if [ "$mergeable" != "MERGEABLE" ]; then
             echo "PR #$pr is not mergeable yet"
             exit 0
           fi
