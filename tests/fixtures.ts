@@ -34,6 +34,23 @@ export const test = base.extend<ITestFixtures>({
         await closePluginDialogs(page);
         await use(async () => closePluginDialogs(page));
     },
+    page: async ({page}, use, testInfo) => {
+        const messages: string[] = [];
+        page.on("console", message => {
+            if (message.type() === "error" || message.type() === "warning") {
+                messages.push(`[console.${message.type()}] ${message.text()}`);
+            }
+        });
+        page.on("pageerror", error => messages.push(`[pageerror] ${error.message}`));
+        page.on("requestfailed", request => {
+            messages.push(`[requestfailed] ${request.url()} ${request.failure()?.errorText ?? ""}`);
+        });
+        await use(page);
+        if (testInfo.status !== testInfo.expectedStatus && messages.length > 0) {
+            // 打印浏览器侧日志，CI 里可以直接从运行日志定位插件加载问题
+            console.log(`[page diagnostics] ${messages.slice(0, 40).join("\n")}`);
+        }
+    },
     testDocumentCleanup: [async ({page, siyuanAPI, createdTestDocuments}, use, testInfo) => {
         await use();
         if (testInfo.status === "passed") {
