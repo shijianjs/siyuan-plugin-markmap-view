@@ -19,8 +19,6 @@ on:
 permissions:
   pull-requests: write
   contents: write
-  # Dependabot bumps of actions/* touch workflow files; merging them needs this scope
-  workflows: write
 
 concurrency:
   # workflow_dispatch runs have no pull_request payload, so fall back to the input
@@ -61,6 +59,13 @@ jobs:
             echo "waiting for: ${pending[*]}"
             sleep 20
           done
+
+          # GITHUB_TOKEN cannot merge pull requests that change workflow files
+          # (there is no "workflows" scope for GITHUB_TOKEN), so those are left to a human.
+          if gh pr view "$pr" --json files --jq '.files[].path' | grep -q '^\.github/workflows/'; then
+            echo "PR #$pr touches workflow files, leaving it for manual merge"
+            exit 0
+          fi
 
           # GitHub computes mergeability asynchronously, so give it a few attempts.
           mergeable=""
