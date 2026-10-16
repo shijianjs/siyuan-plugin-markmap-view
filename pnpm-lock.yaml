@@ -61,8 +61,8 @@ importers:
         specifier: ^1.63.3
         version: 1.93.2
       siyuan:
-        specifier: 1.1.2
-        version: 1.1.2
+        specifier: 1.2.9
+        version: 1.2.9
       svelte:
         specifier: ^4.2.20
         version: 4.2.20
@@ -95,6 +95,15 @@ packages:
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
+
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-RWaDBwsOPEtZhajOiOiMRIQYvQKZdtq9XrDhc49upOs3lIb5E9hj7AK90nUI9kI9qULQ4lDVvI94joTlDkH1Lg==}
+
+  '@dop251/types-goja_nodejs-global@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-nE+7cM9ncPqboXC6jJ60AJJghVfIwN1iXT2E8lgzLJ2LM8b6BjteDU49jq03XAl+8IJG8AuID/pt3D7w5zcCjg==}
+
+  '@dop251/types-goja_nodejs-url@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-o4k1jM2mA4lvmdPYYbDeslXQlfFb+ezk5T4HplpRW0lBTmABDIgBV/tbdXAhIkcEtL5jcQJ3Kgnw+N9E/WMFQw==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -1305,8 +1314,8 @@ packages:
     resolution: {integrity: sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==}
     engines: {node: '>=14'}
 
-  siyuan@1.1.2:
-    resolution: {integrity: sha512-jDwB2LubNPoxzybTmUb33kXTxdMZEQ3VFb7ZAGSBNUoXDDvo6NAPavlcocsBfY3FVeoAzVBx9WcYmn9gAEGmvA==}
+  siyuan@1.2.9:
+    resolution: {integrity: sha512-2bZTzTZocnOxPqY4liGtY2ZDhnhkYgySrlVLCCKWHjmGZ4kJYru0T1hFz5Hro0bz7cvecIEAx7XRV4plIvW1jQ==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -1491,6 +1500,9 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
 
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
+
 snapshots:
 
   '@ampproject/remapping@2.3.0':
@@ -1503,6 +1515,16 @@ snapshots:
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260918183711-b481721df8a2':
+    dependencies:
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
+
+  '@dop251/types-goja_nodejs-global@0.0.0-20260918183711-b481721df8a2': {}
+
+  '@dop251/types-goja_nodejs-url@0.0.0-20260918183711-b481721df8a2':
+    dependencies:
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -2665,7 +2687,12 @@ snapshots:
 
   signal-exit@4.1.0: {}
 
-  siyuan@1.1.2: {}
+  siyuan@1.2.9:
+    dependencies:
+      '@dop251/types-goja_nodejs-buffer': 0.0.0-20260918183711-b481721df8a2
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
+      '@dop251/types-goja_nodejs-url': 0.0.0-20260918183711-b481721df8a2
+      zod: 4.6.7
 
   source-map-js@1.2.1: {}
 
@@ -2808,3 +2835,5 @@ snapshots:
   yaml@2.8.1: {}
 
   yn@3.1.1: {}
+
+  zod@4.6.7: {}
