@@ -78,6 +78,10 @@ jobs:
         run: |
           docker logs siyuan > siyuan-kernel.log 2>&1 || true
           ls -R ci-workspace/data/plugins/siyuan-plugin-markmap-view > siyuan-plugin-tree.log 2>&1 || true
+          echo "---- plugin tree ----"
+          cat siyuan-plugin-tree.log
+          echo "---- kernel log (filtered) ----"
+          grep -iE "plugin|petal|error" siyuan-kernel.log | tail -50 || true
 
       - name: Upload artifacts on failure
         if: failure()
