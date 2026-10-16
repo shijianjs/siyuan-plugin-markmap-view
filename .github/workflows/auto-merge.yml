@@ -21,7 +21,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: auto-merge-${{ github.event.pull_request.number }}
+  # workflow_dispatch runs have no pull_request payload, so fall back to the input
+  group: auto-merge-${{ github.event.inputs.pr || github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
