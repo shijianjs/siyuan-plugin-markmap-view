@@ -34,8 +34,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.2(svelte@4.2.20)(vite@5.4.20(@types/node@20.19.17)(sass@1.93.2))
       '@tsconfig/svelte':
-        specifier: ^4.0.1
-        version: 4.0.1
+        specifier: ^5.0.8
+        version: 5.0.8
       '@types/node':
         specifier: ^20.3.0
         version: 20.19.17
@@ -527,8 +527,8 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@tsconfig/svelte@4.0.1':
-    resolution: {integrity: sha512-B+XlGpmuAQzJqDoBATNCvEPqQg0HkO7S8pM14QDI5NsmtymzRexQ1N+nX2H6RTtFbuFgaZD4I8AAi8voGg0GLg==}
+  '@tsconfig/svelte@5.0.8':
+    resolution: {integrity: sha512-UkNnw1/oFEfecR8ypyHIQuWYdkPvHiwcQ78sh+ymIiYoF+uc5H1UBetbjyqT+vgGJ3qQN6nhucJviX6HesWtKQ==}
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -1811,7 +1811,7 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@tsconfig/svelte@4.0.1': {}
+  '@tsconfig/svelte@5.0.8': {}
 
   '@types/estree@1.0.8': {}
 
