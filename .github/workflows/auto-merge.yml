@@ -34,7 +34,9 @@ jobs:
     steps:
       - name: Wait for checks and merge
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GH_PAT (fine-grained token with contents + pull requests write) is optional;
+          # without it GITHUB_TOKEN is used and PRs touching workflow files are skipped.
+          GH_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.inputs.pr || github.event.pull_request.number }}
           SELF_JOB: Merge when checks pass
@@ -60,9 +62,10 @@ jobs:
             sleep 20
           done
 
-          # GITHUB_TOKEN cannot merge pull requests that change workflow files
-          # (there is no "workflows" scope for GITHUB_TOKEN), so those are left to a human.
-          if gh pr view "$pr" --json files --jq '.files[].path' | grep -q '^\.github/workflows/'; then
+          # GITHUB_TOKEN cannot merge pull requests that change workflow files (there is
+          # no "workflows" scope for GITHUB_TOKEN), so those need the optional GH_PAT.
+          if [ "$GH_TOKEN" = "${GITHUB_TOKEN:-}" ] &&
+            gh pr view "$pr" --json files --jq '.files[].path' | grep -q '^\.github/workflows/'; then
             echo "PR #$pr touches workflow files, leaving it for manual merge"
             exit 0
           fi
