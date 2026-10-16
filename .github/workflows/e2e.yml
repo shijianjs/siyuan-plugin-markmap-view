@@ -49,6 +49,7 @@ jobs:
       - name: Start SiYuan kernel
         run: |
           docker run -d --name siyuan \
+            -e SIYUAN_ACCESS_AUTH_CODE_BYPASS=true \
             -v "${GITHUB_WORKSPACE}/ci-workspace:/siyuan/workspace" \
             -p 6806:6806 \
             b3log/siyuan:latest
