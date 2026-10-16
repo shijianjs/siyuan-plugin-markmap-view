@@ -19,6 +19,8 @@ on:
 permissions:
   pull-requests: write
   contents: write
+  # Dependabot bumps of actions/* touch workflow files; merging them needs this scope
+  workflows: write
 
 concurrency:
   # workflow_dispatch runs have no pull_request payload, so fall back to the input
