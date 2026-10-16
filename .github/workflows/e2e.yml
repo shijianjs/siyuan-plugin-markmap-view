@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # setup-node's pnpm cache requires pnpm to exist, so install pnpm first
       - name: Install pnpm
