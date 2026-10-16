@@ -63,15 +63,19 @@ jobs:
             "https://github.com/siyuan-note/siyuan/releases/download/v${SIYUAN_VERSION}/siyuan-${SIYUAN_VERSION}-linux.AppImage"
           chmod +x siyuan.AppImage
           ./siyuan.AppImage --appimage-extract > /dev/null
-          ls squashfs-root/siyuan/kernel
+          # the AppDir layout differs between releases, so locate the kernel and app dir
+          KERNEL=$(find squashfs-root -type f -name 'SiYuan-Kernel' | head -1)
+          echo "SIYUAN_KERNEL=${KERNEL}" >> "$GITHUB_ENV"
+          APP_DIR=$(dirname "$(dirname "$KERNEL")")
+          echo "SIYUAN_APP_DIR=${APP_DIR}" >> "$GITHUB_ENV"
+          ls "$KERNEL" "$APP_DIR/app/stage/build/desktop" | head -20
 
       - name: Start SiYuan kernel
         run: |
-          ./squashfs-root/siyuan/kernel/SiYuan-Kernel \
+          "${SIYUAN_KERNEL}" \
             --workspace="${GITHUB_WORKSPACE}/ci-workspace" serve \
-            --wd="${GITHUB_WORKSPACE}/squashfs-root/siyuan" \
+            --wd="${SIYUAN_APP_DIR}" \
             --port="${SIYUAN_PORT}" > siyuan-kernel.log 2>&1 &
-          echo $! > siyuan-kernel.pid
           for i in $(seq 1 60); do
             if curl -s -X POST "http://127.0.0.1:${SIYUAN_PORT}/api/system/getWorkspaceInfo" \
               -H 'Content-Type: application/json' -d '{}' | grep -q '"code":0'; then
@@ -100,7 +104,7 @@ jobs:
           echo "---- plugin tree ----"
           ls ci-workspace/data/plugins/siyuan-plugin-markmap-view
           echo "---- frontend assets ----"
-          ls squashfs-root/siyuan/app/stage/build/desktop | head -20
+          ls "${SIYUAN_APP_DIR}/app/stage/build/desktop" | head -20
 
       - name: Upload artifacts on failure
         if: failure()
