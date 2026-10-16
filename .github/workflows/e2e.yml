@@ -32,7 +32,7 @@ jobs:
 
       # setup-node's pnpm cache requires pnpm to exist, so install pnpm first
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 9
           run_install: false
