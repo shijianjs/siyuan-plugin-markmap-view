@@ -48,6 +48,17 @@ push / PR 到 `main` 自动运行；`gh workflow run e2e.yml -f spec=tests/xxx.s
 - `setup-node` 的 `cache: pnpm` 要求先装 pnpm；且 `pnpm-lock.yaml` 必须在版本控制里（此前被 `.gitignore` 忽略，导致 CI 装依赖直接失败）。
 - YAML 文件写入要避免 UTF-8 BOM：带 BOM 的 workflow 会被 GitHub 判为「workflow file issue」而整个 run 失败。PowerShell 的 `Set-Content`/`Out-File` 也会破坏中文注释，workflow 内统一用英文注释。
 
+### 持续集成（Dependabot 与自动合并）
+
+- `.github/dependabot.yml`：每周一检查 npm 依赖与 GitHub Actions，上限 5 个并发 PR，打 `dependencies` 标签，commit 前缀 `chore(deps)` / `chore(ci)`。
+- `.github/workflows/auto-merge.yml`：在 PR 的 E2E 全部通过后 squash 合并。
+  - 触发：`pull_request_target`（opened / reopened / synchronize / ready_for_review），也支持 `workflow_dispatch -f pr=<编号>` 手动补跑。
+  - **等待时必须忽略本工作流自己的 check**（`Merge when checks pass`），否则它永远处于 in_progress，任务会自锁到超时。
+  - `concurrency` 组要用 `${{ github.event.inputs.pr || github.event.pull_request.number }}`：`workflow_dispatch` 没有 `pull_request` 负载，否则所有手动触发的 run 会互相取消。
+  - GitHub 异步计算 mergeable，会先返回 `UNKNOWN`，需要轮询重试几次。
+  - `GITHUB_TOKEN` **没有 `workflows` 权限**（写进 `permissions:` 会直接让 workflow 解析失败），因此修改 `.github/workflows/**` 的 PR（例如 Dependabot 升级 actions）默认跳过，留给人工合并；若配置了细粒度 PAT 密钥 `GH_PAT`（contents + pull requests write），则用 `GH_PAT` 合并，这类 PR 也能自动合。
+- 改动 CI 后建议用 `gh run view <id>` 复核线上结果；workflow 文件不能带 UTF-8 BOM。
+
 ## 5. 提交约定
 
 - 除非用户明确要求，不要自行 commit / push。
