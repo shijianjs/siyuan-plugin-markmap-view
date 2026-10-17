@@ -34,10 +34,10 @@ export function registerMarkmapDock(plugin: SiYuanMarkmapViewPlugin) {
                         </div>
 
                         <span class="fn__flex-1 fn__space"></span>
-                        <span data-type="refresh" class="refresh_btn block__icon b3-tooltips b3-tooltips__sw" aria-label="${plugin.typedI18n.syncMdContent}">
+                        <span data-type="refresh" class="refresh_btn block__icon block__icon--show b3-tooltips b3-tooltips__sw" aria-label="${plugin.typedI18n.syncMdContent}">
                             <svg class=""><use xlink:href="#iconRefresh"></use></svg>
                         </span>
-                        <span data-type="min" class="block__icon b3-tooltips b3-tooltips__sw" aria-label="Min ${adaptHotkey("⌘W")}">
+                        <span data-type="min" class="block__icon block__icon--show b3-tooltips b3-tooltips__sw" aria-label="Min ${adaptHotkey("⌘W")}">
                             <svg class="block__logoicon"><use xlink:href="#iconMin"></use></svg>
                         </span>
                     </div>

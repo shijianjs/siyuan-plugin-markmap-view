@@ -17,6 +17,24 @@ test.describe("markmap dock", () => {
         }
     });
 
+    test("keeps the toolbar buttons visible without hover", async ({createTestDocument, page}) => {
+        await createTestDocument("markmap-dock-buttons", MARKDOWN_SAMPLE);
+
+        const restoreDock = await showMarkmapDock(page, "markmap_dock");
+        try {
+            const dock = await getMarkmapDock(page);
+            const refresh = dock.locator('.block__icons [data-type="refresh"]');
+            const min = dock.locator('.block__icons [data-type="min"]');
+            await expect(refresh).toBeVisible();
+            await expect(min).toBeVisible();
+            // 默认 .block__icon 只有悬停 .block__icons 时才 opacity:1，这里要求始终可见
+            await expect.poll(() => refresh.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+            await expect.poll(() => min.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+        } finally {
+            await restoreDock();
+        }
+    });
+
     test("re-renders the map after clicking refresh", async ({createTestDocument, page}) => {
         await createTestDocument("markmap-dock-refresh", MARKDOWN_SAMPLE);
 
