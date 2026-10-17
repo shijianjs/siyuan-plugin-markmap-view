@@ -7,6 +7,7 @@
   "homepage": "https://github.com/shijianjs/siyuan-plugin-markmap-view",
   "author": "shijianjs",
   "license": "MIT",
+  "packageManager": "pnpm@12.14.0",
   "scripts": {
     "dev": "cross-env NODE_ENV=development WATCH=1 VITE_SOURCEMAP=inline vite build --watch",
     "build": "cross-env NODE_ENV=production vite build",
@@ -45,11 +46,5 @@
     "markmap-render": "^0.18.12",
     "markmap-toolbar": "^0.18.12",
     "markmap-view": "^0.18.12"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild"
-    ]
   }
 }
