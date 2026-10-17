@@ -4,7 +4,7 @@
 
 ## 1. 项目与命令
 
-- pnpm + Vite + Svelte 模板插件；插件名 `siyuan-plugin-markmap-view`（`plugin.json` 里的 `name` 是内核识别的唯一键）。
+- pnpm + Vite 模板插件；插件名 `siyuan-plugin-markmap-view`（`plugin.json` 里的 `name` 是内核识别的唯一键）。
 - `pnpm dev`：watch 开发构建，产物在 `dev/`，livereload 只在 `WATCH=1` 时启用（见 `vite.config.ts`）。
 - `pnpm build:dev`：一次性开发构建，产物同样写入 `dev/`，进程会正常结束；`build:dev` **不**打 `package.zip`。
 - `pnpm build`：生产构建并打包 `package.zip`（zip 只在 `NODE_ENV=production` 时启用）。
