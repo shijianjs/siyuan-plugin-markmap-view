@@ -77,6 +77,7 @@ A single file can be run manually: `gh workflow run e2e.yml -f spec=tests/markma
 
 | Version | Changes |
 |---------|---------|
+| v1.6.3 | Keep the dock toolbar buttons always visible |
 | v1.6.1 | Fix toolbar duplicate display issue |
 | v1.6.0 | Support opening in side window |
 | v1.5.0 | Fix markdown export mode config issues, add multiple configuration options |
