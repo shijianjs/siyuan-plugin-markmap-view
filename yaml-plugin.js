@@ -8,7 +8,7 @@
  */
 // plugins/vite-plugin-parse-yaml.js
 import fs from 'fs';
-import yaml from 'js-yaml';
+import { load as loadYaml } from 'js-yaml';
 import { resolve } from 'path';
 
 export default function vitePluginYamlI18n(options = {}) {
@@ -45,7 +45,7 @@ export default function vitePluginYamlI18n(options = {}) {
                     try {
                         const filePath = resolve(inDir, file);
                         const fileContents = fs.readFileSync(filePath, 'utf8');
-                        const parsed = yaml.load(fileContents);
+                        const parsed = loadYaml(fileContents);
                         const jsonContent = JSON.stringify(parsed, null, 2);
                         const outputFilePath = resolve(outDir, file.replace(/\.(yaml|yml)$/, '.json'));
                         console.log(`---- Writing to ${outputFilePath}`);
