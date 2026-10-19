@@ -5,7 +5,7 @@ import livereload from "rollup-plugin-livereload"
 import zipPack from "vite-plugin-zip-pack";
 import fg from 'fast-glob';
 
-import vitePluginYamlI18n from './yaml-plugin';
+import vitePluginYamlI18n from './yaml-plugin.js';
 
 const env = process.env;
 const isSrcmap = env.VITE_SOURCEMAP === 'inline';
@@ -23,7 +23,7 @@ console.log("outputDir=>", outputDir);
 export default defineConfig({
     resolve: {
         alias: {
-            "@": resolve(__dirname, "src"),
+            "@": resolve(import.meta.dirname, "src"),
         }
     },
 
@@ -56,7 +56,7 @@ export default defineConfig({
         sourcemap: isSrcmap ? 'inline' : false,
 
         lib: {
-            entry: resolve(__dirname, "src/index.ts"),
+            entry: resolve(import.meta.dirname, "src/index.ts"),
             fileName: "index",
             formats: ["cjs"],
         },
