@@ -15,6 +15,9 @@
 - 本地思源内核：`http://127.0.0.1:8950`（工作空间 `S:\my\siyuan\siyuan-debug`）。可用 `SIYUAN_BASE_URL` 覆盖。
 - 工作空间里的插件目录是指向本仓库 `dev/` 的**符号链接**（`pnpm make-link`），所以本地改代码后要 `pnpm dev` 或 `pnpm build:dev` 才能生效。
 - 前端入口固定用 `/stage/build/desktop/`，不要改成浏览器版资源（原因见第 4 节）。
+- 上游资料（GitHub 源码、文档）一律读本地克隆，**不要访问 `raw.githubusercontent.com`，也不要用网页
+  抓取 GitHub**：国内网络经常超时。目录约定与可参考的第三方克隆见 `../AGENTS.md`；缺仓库时按它用
+  `gh repo clone` 克隆到本地再读。
 
 ## 3. 集成测试（Playwright）
 
