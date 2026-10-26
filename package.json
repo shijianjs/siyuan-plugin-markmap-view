@@ -32,7 +32,7 @@
     "fast-glob": "^3.2.12",
     "js-yaml": "^5.5.0",
     "rollup-plugin-livereload": "^2.0.5",
-    "sass": "^1.105.2",
+    "sass": "^1.106.1",
     "siyuan": "1.2.9",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
