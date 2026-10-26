@@ -204,8 +204,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       sass:
-        specifier: ^1.105.2
-        version: 1.105.2
+        specifier: ^1.106.1
+        version: 1.106.1
       siyuan:
         specifier: 1.2.9
         version: 1.2.9
@@ -214,13 +214,13 @@ importers:
         version: 5.9.2
       vite:
         specifier: ^8.3.5
-        version: 8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1)
+        version: 8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1)
       vite-plugin-static-copy:
         specifier: ^3.4.0
-        version: 3.4.0(vite@8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1))
+        version: 3.4.0(vite@8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1))
       vite-plugin-zip-pack:
         specifier: ^1.0.5
-        version: 1.2.4(vite@8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1))
+        version: 1.2.4(vite@8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1))
 
 packages:
 
@@ -1169,8 +1169,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sass@1.105.2:
-    resolution: {integrity: sha512-KxW6ZKZiBKWK3ziQ4YZ3cpqo8/1TlHXE8t9nBNvGDZFoBFbk2MD7RacxYFs8zy8hzeFwpFYkVyAhboi47uYPEQ==}
+  sass@1.106.1:
+    resolution: {integrity: sha512-kD+Gi66vycZcbJt+42NC4z4PXNMcCajVrJPhqoKKXy5cOBMmJQt052CxIBcRjwYXeImHYOpu/ydWWGZQIenl7A==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -1187,10 +1187,6 @@ packages:
 
   siyuan@1.2.9:
     resolution: {integrity: sha512-2bZTzTZocnOxPqY4liGtY2ZDhnhkYgySrlVLCCKWHjmGZ4kJYru0T1hFz5Hro0bz7cvecIEAx7XRV4plIvW1jQ==}
-
-  source-map-js@1.2.1:
-    resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
-    engines: {node: '>=0.10.0'}
 
   source-map-js@1.2.2:
     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
@@ -2240,11 +2236,11 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass@1.105.2:
+  sass@1.106.1:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
-      source-map-js: 1.2.1
+      source-map-js: 1.2.2
     optionalDependencies:
       '@parcel/watcher': 2.5.1
 
@@ -2262,8 +2258,6 @@ snapshots:
       '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
       '@dop251/types-goja_nodejs-url': 0.0.0-20260918183711-b481721df8a2
       zod: 4.6.7
-
-  source-map-js@1.2.1: {}
 
   source-map-js@1.2.2: {}
 
@@ -2292,20 +2286,20 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite-plugin-static-copy@3.4.0(vite@8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1)):
+  vite-plugin-static-copy@3.4.0(vite@8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1)):
     dependencies:
       chokidar: 3.6.0
       p-map: 7.1.1
       picocolors: 1.1.1
       tinyglobby: 0.2.17
-      vite: 8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1)
+      vite: 8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1)
 
-  vite-plugin-zip-pack@1.2.4(vite@8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1)):
+  vite-plugin-zip-pack@1.2.4(vite@8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1)):
     dependencies:
       jszip: 3.10.1
-      vite: 8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1)
+      vite: 8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1)
 
-  vite@8.3.5(@types/node@26.6.5)(sass@1.105.2)(yaml@2.8.1):
+  vite@8.3.5(@types/node@26.6.5)(sass@1.106.1)(yaml@2.8.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -2315,7 +2309,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.6.5
       fsevents: 2.3.3
-      sass: 1.105.2
+      sass: 1.106.1
       yaml: 2.8.1
 
   whatwg-encoding@3.1.1:
