@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "long-task-tracking": {
+      "source": "shijianjs/dev-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/long-task-tracking/SKILL.md",
+      "computedHash": "538313c44cbead9bd5cebe12aaf0016324f632e5ae81abfd3e8a0bedb1026cb8"
+    }
+  }
+}

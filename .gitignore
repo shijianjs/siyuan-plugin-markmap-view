@@ -16,3 +16,7 @@ tests/.plugin-state.json
 ci-workspace
 siyuan-kernel.log
 siyuan-plugin-tree.log
+
+# Agent skills：npx skills 生成的符号链接（绝对路径，本地生成不入库）
+.claude/skills/
+.codebuddy/skills/
