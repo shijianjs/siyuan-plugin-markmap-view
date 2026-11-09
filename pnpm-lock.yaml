@@ -204,8 +204,8 @@ importers:
         specifier: ^2.0.5
         version: 2.0.5
       sass:
-        specifier: ^1.107.0
-        version: 1.107.0
+        specifier: ^1.108.0
+        version: 1.108.0
       siyuan:
         specifier: 1.2.9
         version: 1.2.9
@@ -214,13 +214,13 @@ importers:
         version: 7.0.2
       vite:
         specifier: ^8.3.5
-        version: 8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1)
+        version: 8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1)
       vite-plugin-static-copy:
         specifier: ^4.1.1
-        version: 4.1.1(vite@8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1))
+        version: 4.1.1(vite@8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1))
       vite-plugin-zip-pack:
         specifier: ^1.0.5
-        version: 1.2.4(vite@8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1))
+        version: 1.2.4(vite@8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1))
 
 packages:
 
@@ -1289,8 +1289,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sass@1.107.0:
-    resolution: {integrity: sha512-+whPilvVNoAD57xvdIPLQT0gXo4RD1lHYw+Uw8zYHlojaeaMDxK14tc0JmEsz/XMns48h3lpypisMP+3E8eHQA==}
+  sass@1.108.0:
+    resolution: {integrity: sha512-9HwnefouIfwY+XuA1rS5xOhALH5vsoe3SzYICG3MEwpkMbE7tpuh5ytZFRXUKPYkxY7lKdIbqxl+DxQGo8jwQQ==}
     engines: {node: '>=20.19.0'}
     hasBin: true
 
@@ -2416,7 +2416,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sass@1.107.0:
+  sass@1.108.0:
     dependencies:
       chokidar: 5.0.0
       immutable: 5.1.9
@@ -2487,20 +2487,20 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite-plugin-static-copy@4.1.1(vite@8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1)):
+  vite-plugin-static-copy@4.1.1(vite@8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1)):
     dependencies:
       chokidar: 3.6.0
       p-map: 7.1.1
       picocolors: 1.1.1
       tinyglobby: 0.2.17
-      vite: 8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1)
+      vite: 8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1)
 
-  vite-plugin-zip-pack@1.2.4(vite@8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1)):
+  vite-plugin-zip-pack@1.2.4(vite@8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1)):
     dependencies:
       jszip: 3.10.1
-      vite: 8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1)
+      vite: 8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1)
 
-  vite@8.3.5(@types/node@26.6.6)(sass@1.107.0)(yaml@2.8.1):
+  vite@8.3.5(@types/node@26.6.6)(sass@1.108.0)(yaml@2.8.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -2510,7 +2510,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.6.6
       fsevents: 2.3.3
-      sass: 1.107.0
+      sass: 1.108.0
       yaml: 2.8.1
 
   whatwg-encoding@3.1.1:
