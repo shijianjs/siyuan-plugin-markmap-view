@@ -44,7 +44,7 @@
     "markmap-common": "^0.18.9",
     "markmap-lib": "^0.18.12",
     "markmap-render": "^0.18.12",
-    "markmap-toolbar": "^0.18.12",
+    "markmap-toolbar": "^0.18.13",
     "markmap-view": "^0.18.12"
   }
 }
