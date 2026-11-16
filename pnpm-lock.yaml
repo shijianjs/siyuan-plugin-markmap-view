@@ -173,8 +173,8 @@ importers:
         specifier: ^0.18.9
         version: 0.18.9
       markmap-lib:
-        specifier: ^0.18.12
-        version: 0.18.12(markmap-common@0.18.9)
+        specifier: ^0.18.13
+        version: 0.18.13(markmap-common@0.18.9)
       markmap-render:
         specifier: ^0.18.12
         version: 0.18.12(markmap-common@0.18.9)
@@ -1111,11 +1111,13 @@ packages:
 
   markmap-html-parser@0.18.11:
     resolution: {integrity: sha512-+kC5C4sCGntGUhGvTa5VIb5rtM75cSy/VCy3tzZoNAcn2qZGdgYvljN0WvjsOzrEzp+V6XKgwzO0u2TdzNAiOg==}
+    deprecated: Replaced by @markmap/* in 1.0.0. See https://markmap.js.org/docs/migration
     peerDependencies:
       markmap-common: '*'
 
-  markmap-lib@0.18.12:
-    resolution: {integrity: sha512-WCA4OT+b71jYg0e4PS/6NRKqihod5OpPsvw1jEGHQwCtqQrY/yXXCeRyuL3axOS5cMy5pV8BSl4CwKfJU1LxJg==}
+  markmap-lib@0.18.13:
+    resolution: {integrity: sha512-8ufvDRDxKu7aMeVaVZpCxcbpaJa96q+FdwzSDtb/tpPYPF9L6lO7t5X0kji6M3N1TAEFb2gzaVoe8EAbBTASYw==}
+    deprecated: Replaced by @markmap/* in 1.0.0. See https://markmap.js.org/docs/migration
     peerDependencies:
       markmap-common: '*'
 
@@ -1132,6 +1134,12 @@ packages:
 
   markmap-view@0.18.12:
     resolution: {integrity: sha512-D8bzT1YwIC/8rkbwm6WzigVUrpOAGv7ioEGTi1Lj+Oo8gO5sAm6hhli27jvTgUcZ9TwBeIWZ+dSUP+AupYUGlQ==}
+    peerDependencies:
+      markmap-common: '*'
+
+  markmap-view@0.18.13:
+    resolution: {integrity: sha512-FNzBzDZ81hR9TJ8MmpDxH1qhFWVqAHeCE2BkOW4GseDrymNTlXg5uLaiVl6PFAlB+O6mG6Gkbd+UsHuaOpgyKA==}
+    deprecated: Replaced by @markmap/* in 1.0.0. See https://markmap.js.org/docs/migration
     peerDependencies:
       markmap-common: '*'
 
@@ -1402,6 +1410,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -2236,7 +2245,7 @@ snapshots:
       cheerio: 1.0.0
       markmap-common: 0.18.9
 
-  markmap-lib@0.18.12(markmap-common@0.18.9):
+  markmap-lib@0.18.13(markmap-common@0.18.9):
     dependencies:
       '@babel/runtime': 7.28.4
       '@vscode/markdown-it-katex': 1.1.2
@@ -2249,7 +2258,7 @@ snapshots:
       markdown-it-sup: 2.0.0
       markmap-common: 0.18.9
       markmap-html-parser: 0.18.11(markmap-common@0.18.9)
-      markmap-view: 0.18.12(markmap-common@0.18.9)
+      markmap-view: 0.18.13(markmap-common@0.18.9)
       prismjs: 1.30.0
       yaml: 2.8.1
 
@@ -2265,6 +2274,12 @@ snapshots:
       markmap-common: 0.18.9
 
   markmap-view@0.18.12(markmap-common@0.18.9):
+    dependencies:
+      '@babel/runtime': 7.28.4
+      d3: 7.9.0
+      markmap-common: 0.18.9
+
+  markmap-view@0.18.13(markmap-common@0.18.9):
     dependencies:
       '@babel/runtime': 7.28.4
       d3: 7.9.0
