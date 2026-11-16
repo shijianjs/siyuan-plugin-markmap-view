@@ -179,8 +179,8 @@ importers:
         specifier: ^0.18.12
         version: 0.18.12(markmap-common@0.18.9)
       markmap-toolbar:
-        specifier: ^0.18.12
-        version: 0.18.12(markmap-common@0.18.9)
+        specifier: ^0.18.13
+        version: 0.18.13(markmap-common@0.18.9)
       markmap-view:
         specifier: ^0.18.12
         version: 0.18.12(markmap-common@0.18.9)
@@ -1124,8 +1124,9 @@ packages:
     peerDependencies:
       markmap-common: '*'
 
-  markmap-toolbar@0.18.12:
-    resolution: {integrity: sha512-+MQ/95ywl/ZLhVKb0tKjRa3p/AuUSYsuJRs1MPHmkxcxBaumXgzLNHUUnLjKmsbNxeZUSQGe3QJaFyRQYcHZJg==}
+  markmap-toolbar@0.18.13:
+    resolution: {integrity: sha512-TOy0/uifW73gxRqvMalcVxVljGnvT5dkYp4xgeH8c17RJASYiO7TPE69bLfrsJQ/EJxnrUTIEvbBdDhWQpZmrQ==}
+    deprecated: Replaced by @markmap/* in 1.0.0. See https://markmap.js.org/docs/migration
     peerDependencies:
       markmap-common: '*'
 
@@ -2257,7 +2258,7 @@ snapshots:
       '@babel/runtime': 7.28.4
       markmap-common: 0.18.9
 
-  markmap-toolbar@0.18.12(markmap-common@0.18.9):
+  markmap-toolbar@0.18.13(markmap-common@0.18.9):
     dependencies:
       '@babel/runtime': 7.28.4
       '@gera2ld/jsx-dom': 2.2.2
