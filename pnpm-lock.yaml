@@ -176,8 +176,8 @@ importers:
         specifier: ^0.18.13
         version: 0.18.13(markmap-common@0.18.9)
       markmap-render:
-        specifier: ^0.18.12
-        version: 0.18.12(markmap-common@0.18.9)
+        specifier: ^0.18.13
+        version: 0.18.13(markmap-common@0.18.9)
       markmap-toolbar:
         specifier: ^0.18.13
         version: 0.18.13(markmap-common@0.18.9)
@@ -1145,8 +1145,9 @@ packages:
     peerDependencies:
       markmap-common: '*'
 
-  markmap-render@0.18.12:
-    resolution: {integrity: sha512-QRVpj5+1m9fazCUyMHEHeiYYyua9hNExkaET9ZZrq8nsekkza0fwIsjRYWtzytG2vDYkY5TYhqsJLy7mZLgE5A==}
+  markmap-render@0.18.13:
+    resolution: {integrity: sha512-or7aEkUQoT0x+NryDxaVDtSM2x4gP9e2KMWyq1y84o90/+mUm0QsQDB9AnnEyIyhJ2CgCa+FyUL3cTswg26wFw==}
+    deprecated: Replaced by @markmap/* in 1.0.0. See https://markmap.js.org/docs/migration
     peerDependencies:
       markmap-common: '*'
 
@@ -2319,7 +2320,7 @@ snapshots:
       prismjs: 1.30.0
       yaml: 2.8.1
 
-  markmap-render@0.18.12(markmap-common@0.18.9):
+  markmap-render@0.18.13(markmap-common@0.18.9):
     dependencies:
       '@babel/runtime': 7.28.4
       markmap-common: 0.18.9
