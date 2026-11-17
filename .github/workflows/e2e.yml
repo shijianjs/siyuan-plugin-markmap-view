@@ -1,8 +1,8 @@
 name: E2E
 
 on:
-  push:
-    branches: [main]
+  # Pull requests and manual runs only (`gh workflow run e2e.yml`): a push to main no longer queues
+  # the Playwright suite.
   pull_request:
     branches: [main]
   workflow_dispatch:
