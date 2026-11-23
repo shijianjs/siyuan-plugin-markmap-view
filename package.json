@@ -33,7 +33,7 @@
     "js-yaml": "^5.5.0",
     "rollup-plugin-livereload": "^2.0.5",
     "sass": "^1.108.0",
-    "siyuan": "1.2.9",
+    "siyuan": "1.3.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.8",
     "vite-plugin-static-copy": "^4.1.1",
